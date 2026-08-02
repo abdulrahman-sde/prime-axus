@@ -1,0 +1,81 @@
+import { Category, ShopProduct } from '@/types';
+
+export const categories: Category[] = [
+  { id: 'nature', name: 'Nature', icon: 'landscape' },
+  { id: 'architecture', name: 'Architecture', icon: 'apartment' },
+  { id: 'portrait', name: 'Portrait', icon: 'swipe_vertical' },
+  { id: 'analog', name: 'Analog', icon: 'camera_roll' },
+  { id: 'night', name: 'Night', icon: 'dark_mode' },
+  { id: 'travel', name: 'Travel', icon: 'flight' },
+  { id: 'wildlife', name: 'Wildlife', icon: 'pets' },
+  { id: 'abstract', name: 'Abstract', icon: 'palette' },
+  { id: 'editorial', name: 'Editorial', icon: 'auto_awesome' },
+];
+
+export const shopProducts: ShopProduct[] = [
+  {
+    id: 1,
+    name: 'Summit Silence',
+    description: 'Signed Limited Edition Print',
+    price: 245,
+    rating: 4.92,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBxcXKsey7LR2v4OgvzT14ItDkfuXtsEGEIAjJG8p3RLR7l4lEiVUU2J918Cay0fkeANIp7l047H_T0U07_RwM8Vly04Y6amq1qEojSnqtiAKsER23dI6fPCaTc4009gT6KrMGU9pc3lsd1uNTgaGG3_oBMpRVMRPyDk--18o9Rg7BqyLK4P38LtCNK7BVKH-itlChOzIRSSwiLo8hLQq6z-6WXfTsp5ucPEUIYPIAw40FDSApX4wPa',
+  },
+  {
+    id: 2,
+    name: 'Brutalist Blue',
+    description: 'Museum Quality Giclée',
+    price: 180,
+    rating: 5.0,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAB_hC3Tz9xbdTNkL471PgoV-rqyAsGZv9zXcTJuPRt7M7Hyg5hWK8WKFQQoyJ0lJQnI_zncJ517IS2DfanizWjhirx65dx7JJxE3rgMxyWNz2LBRld24z0LFtPzz2w_f2QLXq2r4BKpgkfdQLz96hDK5ezbN1qwku_hqBzkWtHQtOyjbiCX4v4dPY2WI5RNKCwar2jfF84YMBY6ql6O1r6dg0imkmH2R5KXSv0xuGZ05_PkOWwNy6',
+  },
+  {
+    id: 3,
+    name: 'Neon Rains',
+    description: 'Metal Gallery Float Mount',
+    price: 310,
+    rating: 4.88,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPs4LmoIbvxk-dRurP0fg8ozD0_b5_SSH8mgSB9XS2q7Nh90zUDfohDsl3gn0YjXYtdrwS46Kri9el-l2PO0izT1-4vz9O39LsTQpERUuYPm9NSEMWZzzqTq0YtNklUyPH7105upSmsQcjynuFn6ZsX4aggGOAnoiA7BICXZVyw1ZF8Bi-U2dXZi42P2Ude16D5mtHQM9P7zNL4myNUOJkviCu5BFgWMP0Dz9F-GhiWzLqRJqjkwBo',
+    liked: true,
+  },
+  {
+    id: 4,
+    name: 'Morning Dew',
+    description: 'Framed Cotton Paper Print',
+    price: 125,
+    rating: 4.95,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtzuEbgh2GzSLCPFdh7P2itzAM_gZQ4IibL4PaKHqPE00mZS6ybum-TLqLC_7wibQz6kcD9Ei2o0m0YhrTQxi-Xjw_nEdoBiEJj7SFiS1idn87UnCUydcnK2-01wuUKxuLtZl47oWmlo0zLi-NGz_aAth5EdtJxWfzBwovKNsVSa9JH0ys68Eqvxe2x_vMyqq2Bk2WGwYadFyBroteRkdLwjyRDfb_HO8AzVG-KnxAFk5q13WoFkjs',
+  },
+  {
+    id: 5,
+    name: 'Coastal Clash',
+    description: 'Panorama Acrylic Print',
+    price: 420,
+    rating: 4.97,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8ozMzAwxgjkqODPgwewxPa7s7ICE0yXdxrIvVD8bKBr6h8TXLFaxFJU3RhDVdWeCkB89aud_nydR2MsmlMt0IXmdFSBw5uGYo8Fy8eAlv-PTIV_RFKoBWAogVVU4vieEvw4psVaM2FkFW0RhG2C2MXLFZN7JT-UembE2-LDX4TSZFkyNiztmonZGYKPM4XjfVLvYd2xiVmKdkv9K22MZC4IyXGKLQgDMOgnjGihTXSfA80P8BlcDC',
+  },
+  {
+    id: 6,
+    name: 'Dune Soul',
+    description: 'Archival Fiber Print',
+    price: 295,
+    rating: 5.0,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDZ97AggWbP68sBYrGn0AGS9jLn7wbOepKOpzPzb-hYTr4SV3IUwu7MsPGp_8ZRySFA_xIPVI25oG7ahWiUGnCLwm3AAL6osouGEFl4Qnt2S4y2B70gO2YrSTfzXqzvxjxzHHKmZEGyC285qjhwrNGLIKKpQtkpFiwLV4CXLhD0oF3DPVpv2O9DQbkc5shr2GpIq2HZpZgsIuKAmYZFi6d4wriOceRUQedp7ZEkArM6mQffSJsIPYrk',
+  },
+  {
+    id: 7,
+    name: 'Folding Light',
+    description: 'Limited Series Monograph',
+    price: 165,
+    rating: 4.82,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCykuIeJjhppswSTcriLtfurI6vOIbh5LbFmtdYhwYQs2dTK96BtBPhQARrJk9ALbNcE5KPDfMfOMbC-B35tLgh56LYc2kumIYC_HF6NuS1mjjtsH9944YmftAPFicu1KqcfpN4jHbfbSy8rCqD5rgsVSMRgIN1M-AeI5gzI2I6Ftq6q4tAGKnCHjEXy6oHEzvL9vjSHS1v3YDaMr46WiLOoJQqWgDFV14gYgF3WB4dDC9wuvyb5akp',
+  },
+  {
+    id: 8,
+    name: 'Ghost of the Peak',
+    description: 'Wildlife Heritage Print',
+    price: 550,
+    rating: 4.99,
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8Zkz5SK3A-yGWhmL2kYUP_8ee0ozCSJV7VTvt_NhFHLtj2kTmeMyOpIFHHCeg5pRW9Ufq2SGFTcD0nM-XvKJVowGPW95UkUDRhdJRROb5ERRhWveZoyVa4wPqnMsNXfGEDbSpTQ3v1vquZNaCSF_FMTxX2eT414_V9gkXgEUa-FaXDZLQZcCLgOafadtksjqBbLzVdmYB4q6w_kZkre9J3UqC3LAqt9J65pt6aZqkqsjQJakOg6TP',
+  },
+];
