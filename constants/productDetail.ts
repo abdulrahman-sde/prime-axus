@@ -8,7 +8,7 @@ export const productDetail: ProductDetail = {
   id: 1,
   title: 'Aurora Wireless Headphones Pro',
   subtitle: 'Flagship over-ear headphones',
-  artist: 'LuxeFrame Audio',
+  artist: 'Essentials Audio',
   artistAvatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBw7MGGM7qPFfQcI5T6b-w5JzHamPbqtbzBiF9r3XVTqyWzKU9QcQS5mqRFzdsNgKeqGsdMuQHl-HNTPtqxqhv2GuQd8V3Mzu-AbGB-9o-Pxx1-NjEDa7AQymgb6_oTudDICmDhlMNBnYErQMyIg9kMz6XUYOin_Qc7LSOCFOmaIfX89zZC8hjYQ73i9GwOpMVK6MMCNMEVwWOuURzpEFVyCRXdhIU2Q3WR8IU6S1A2OJvvkLTjvWdS',
   edition: 'Model 2026 · Charcoal',
   rating: 4.9,

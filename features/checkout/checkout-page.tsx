@@ -1,38 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { shopProducts } from "@/constants/products";
-import { Button } from "@/components/ui/button";
+import { createOrder, getCartProducts } from "@/features/cart/actions";
+import { useCart } from "@/hooks/use-cart";
+import type { StoreProduct } from "@/types";
+import { TextureButton } from "@/components/ui/texture-button";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import Skeleton from "@/components/shared/skeleton";
+import { toast } from "sonner";
+import { cn, formatPrice } from "@/lib/utils";
 import {
   CheckCircle,
   ChevronLeft,
-  CreditCard,
   Lock,
+  Money,
   ShieldCheck,
   Truck,
   TruckFast,
 } from "reicon-react";
-
-type OrderItem = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  qty: number;
-};
-
-const orderItems: OrderItem[] = shopProducts.slice(0, 3).map((p, index) => ({
-  id: p.id,
-  name: p.name,
-  description: p.description,
-  price: p.price,
-  image: p.image,
-  qty: index === 2 ? 2 : 1,
-}));
 
 const shippingMethods = [
   {
@@ -46,7 +33,7 @@ const shippingMethods = [
     id: "express",
     label: "Express delivery",
     detail: "1–2 business days",
-    price: 18,
+    price: 5000,
     icon: TruckFast,
   },
 ] as const;
@@ -72,11 +59,47 @@ function SectionTitle({
 }
 
 export default function CheckoutPage() {
+  const { items, clear } = useCart();
+  const [products, setProducts] = useState<StoreProduct[]>([]);
+  const [fetchedFor, setFetchedFor] = useState<string | null>(null);
   const [shippingMethod, setShippingMethod] =
     useState<(typeof shippingMethods)[number]["id"]>("standard");
-  const [placed, setPlaced] = useState(false);
+  const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
 
-  const subtotal = orderItems.reduce(
+  const itemsKey = items.map((item) => item.productId).join(",");
+  const loading = fetchedFor !== itemsKey;
+
+  useEffect(() => {
+    let cancelled = false;
+    getCartProducts(items.map((item) => item.productId)).then((result) => {
+      if (!cancelled) {
+        setProducts(result);
+        setFetchedFor(itemsKey);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [itemsKey, items]);
+
+  const productById = useMemo(
+    () => new Map(products.map((p) => [p.id, p])),
+    [products],
+  );
+
+  const cartRows = items
+    .map((item) => {
+      const product = productById.get(item.productId);
+      if (!product) return null;
+      return { ...product, qty: item.qty, size: item.size };
+    })
+    .filter(
+      (row): row is StoreProduct & { qty: number; size: string | null } =>
+        row !== null,
+    );
+
+  const subtotal = cartRows.reduce(
     (sum, item) => sum + item.price * item.qty,
     0,
   );
@@ -84,7 +107,47 @@ export default function CheckoutPage() {
     shippingMethods.find((method) => method.id === shippingMethod)?.price ?? 0;
   const total = subtotal + shipping;
 
-  if (placed) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (cartRows.length === 0) return;
+
+    const form = new FormData(e.currentTarget);
+    const email = String(form.get("email") ?? "").trim();
+    const firstName = String(form.get("firstName") ?? "").trim();
+    const lastName = String(form.get("lastName") ?? "").trim();
+    const address = String(form.get("address") ?? "").trim();
+    const city = String(form.get("city") ?? "").trim();
+    const zip = String(form.get("zip") ?? "").trim();
+    const country = String(form.get("country") ?? "").trim();
+
+    const toastId = toast.loading("Placing your order...");
+    startTransition(async () => {
+      try {
+        const { orderId } = await createOrder({
+          customerName: `${firstName} ${lastName}`,
+          customerEmail: email,
+          address: `${address}, ${city}, ${zip}, ${country}`,
+          shipping,
+          paymentMethod: "Cash on Delivery",
+          items: items.map((item) => ({
+            productId: item.productId,
+            size: item.size,
+            qty: item.qty,
+          })),
+        });
+        clear();
+        setPlacedOrderId(orderId);
+        toast.success("Order placed", { id: toastId });
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : "Failed to place order",
+          { id: toastId },
+        );
+      }
+    });
+  }
+
+  if (placedOrderId) {
     return (
       <main className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-24">
         <span className="grid h-16 w-16 place-items-center rounded-full bg-tertiary/10 text-tertiary">
@@ -94,24 +157,77 @@ export default function CheckoutPage() {
           Order confirmed
         </h1>
         <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground sm:text-base">
-          Thanks for your order. A confirmation email is on its way — your
-          prints will be dispatched from our studio within 1–2 business days.
+          Thanks for your order (ref {placedOrderId.slice(-8).toUpperCase()}).
+          A confirmation email is on its way — your order will be dispatched
+          within 1–2 business days.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button
-            className="rounded-full px-6"
+          <TextureButton
             render={<Link href="/products" />}
           >
             Continue shopping
-          </Button>
-          <Button
-            variant="outline"
-            className="rounded-full px-6"
+          </TextureButton>
+          <TextureButton
+            variant="secondary"
             render={<Link href="/" />}
           >
             Back to home
-          </Button>
+          </TextureButton>
         </div>
+      </main>
+    );
+  }
+
+  if (loading) {
+    return (
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+        <div className="mb-8">
+          <Skeleton className="h-4 w-28" />
+          <Skeleton className="mt-4 h-9 w-48" />
+          <Skeleton className="mt-2 h-4 w-72" />
+        </div>
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_380px] lg:gap-10">
+          <div className="space-y-6">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="rounded-xl border border-border bg-card p-5 sm:p-6">
+                <Skeleton className="h-7 w-40" />
+                <div className="mt-4 space-y-3">
+                  <Skeleton className="h-11 w-full" />
+                  <Skeleton className="h-11 w-full" />
+                  <Skeleton className="h-11 w-2/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <aside className="rounded-xl border border-border bg-card p-6 lg:sticky lg:top-24">
+            <Skeleton className="h-5 w-32" />
+            <div className="mt-4 space-y-4">
+              <Skeleton className="h-14 w-full" />
+              <Skeleton className="h-14 w-full" />
+              <Skeleton className="h-14 w-full" />
+            </div>
+            <Skeleton className="mt-5 h-9 w-full rounded-full" />
+          </aside>
+        </div>
+      </main>
+    );
+  }
+
+  if (cartRows.length === 0) {
+    return (
+      <main className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-24">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          Your cart is empty
+        </h1>
+        <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
+          Add something to your cart before checking out.
+        </p>
+        <TextureButton
+          className="mt-8"
+          render={<Link href="/products" />}
+        >
+          Browse products
+        </TextureButton>
       </main>
     );
   }
@@ -135,13 +251,7 @@ export default function CheckoutPage() {
       </div>
 
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_380px] lg:gap-10">
-        <form
-          className="space-y-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setPlaced(true);
-          }}
-        >
+        <form id="checkout-form" className="space-y-6" onSubmit={onSubmit}>
           <section className="rounded-xl border border-border bg-card p-5 sm:p-6">
             <SectionTitle step={1} title="Contact" />
             <div className="space-y-4">
@@ -154,6 +264,7 @@ export default function CheckoutPage() {
                 </label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   required
                   placeholder="you@example.com"
@@ -178,6 +289,7 @@ export default function CheckoutPage() {
                 </label>
                 <Input
                   id="firstName"
+                  name="firstName"
                   required
                   placeholder="Alex"
                   className="h-11 rounded-lg px-3.5 text-sm"
@@ -192,6 +304,7 @@ export default function CheckoutPage() {
                 </label>
                 <Input
                   id="lastName"
+                  name="lastName"
                   required
                   placeholder="Rivera"
                   className="h-11 rounded-lg px-3.5 text-sm"
@@ -206,6 +319,7 @@ export default function CheckoutPage() {
                 </label>
                 <Input
                   id="address"
+                  name="address"
                   required
                   placeholder="128 Marlow Lane, Apt 4B"
                   className="h-11 rounded-lg px-3.5 text-sm"
@@ -220,6 +334,7 @@ export default function CheckoutPage() {
                 </label>
                 <Input
                   id="city"
+                  name="city"
                   required
                   placeholder="San Francisco"
                   className="h-11 rounded-lg px-3.5 text-sm"
@@ -235,6 +350,7 @@ export default function CheckoutPage() {
                   </label>
                   <Input
                     id="zip"
+                    name="zip"
                     required
                     placeholder="94110"
                     className="h-11 rounded-lg px-3.5 text-sm"
@@ -249,6 +365,7 @@ export default function CheckoutPage() {
                   </label>
                   <select
                     id="country"
+                    name="country"
                     defaultValue="US"
                     className={cn(inputClass, "w-full")}
                   >
@@ -308,7 +425,7 @@ export default function CheckoutPage() {
                         selected ? "text-primary" : "text-foreground",
                       )}
                     >
-                      {method.price === 0 ? "Free" : `$${method.price}`}
+                      {method.price === 0 ? "Free" : formatPrice(method.price)}
                     </span>
                   </button>
                 );
@@ -318,66 +435,42 @@ export default function CheckoutPage() {
 
           <section className="rounded-xl border border-border bg-card p-5 sm:p-6">
             <SectionTitle step={4} title="Payment" />
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="cardNumber"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Card number
-                </label>
-                <div className="relative">
-                  <CreditCard
-                    size={16}
-                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
-                  />
-                  <Input
-                    id="cardNumber"
-                    required
-                    inputMode="numeric"
-                    placeholder="4242 4242 4242 4242"
-                    className="h-11 rounded-lg pl-10 pr-3.5 text-sm"
-                  />
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-4 rounded-xl border border-primary bg-primary/5 p-4 text-left ring-1 ring-primary">
+                <div className="flex items-center gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+                    <Money size={18} />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">
+                      Cash on Delivery
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Pay when your order arrives
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label
-                    htmlFor="expiry"
-                    className="text-sm font-medium text-foreground"
-                  >
-                    Expiry date
-                  </label>
-                  <Input
-                    id="expiry"
-                    required
-                    placeholder="MM / YY"
-                    className="h-11 rounded-lg px-3.5 text-sm"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label
-                    htmlFor="cvc"
-                    className="text-sm font-medium text-foreground"
-                  >
-                    CVC
-                  </label>
-                  <Input
-                    id="cvc"
-                    required
-                    inputMode="numeric"
-                    placeholder="123"
-                    className="h-11 rounded-lg px-3.5 text-sm"
-                  />
-                </div>
+                <span className="text-sm font-semibold text-primary">
+                  Selected
+                </span>
               </div>
               <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Lock size={13} />
-                Payments are encrypted and processed securely. This is a demo
-                — no card is charged.
+                Online payment is not available — you&apos;ll pay in cash at
+                your door.
               </p>
             </div>
           </section>
+
+          <TextureButton
+            type="submit"
+            className="w-full lg:hidden"
+            disabled={pending}
+          >
+            {pending
+              ? "Placing order..."
+              : `Place order — ${formatPrice(total)}`}
+          </TextureButton>
         </form>
 
         <aside className="rounded-xl border border-border bg-card p-6 lg:sticky lg:top-24">
@@ -386,14 +479,25 @@ export default function CheckoutPage() {
           </h2>
 
           <div className="space-y-4">
-            {orderItems.map((item) => (
-              <div key={item.id} className="flex items-center gap-3">
+            {cartRows.map((item) => (
+              <div
+                key={`${item.id}:${item.size ?? ""}`}
+                className="flex items-center gap-3"
+              >
                 <div className="relative h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-muted">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="h-full w-full object-cover"
-                  />
+                  {item.image ? (
+                    <Image
+                      fill
+                      sizes="48px"
+                      src={item.image}
+                      alt={item.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-[10px] text-muted-foreground">
+                      No img
+                    </div>
+                  )}
                   <span className="absolute -right-0 -top-0 grid h-4 w-4 place-items-center rounded-full bg-foreground text-[9px] font-semibold text-background">
                     {item.qty}
                   </span>
@@ -403,11 +507,12 @@ export default function CheckoutPage() {
                     {item.name}
                   </p>
                   <p className="truncate text-xs text-muted-foreground">
-                    {item.description}
+                    {item.type ?? item.category}
+                    {item.size ? ` · Size ${item.size}` : ""}
                   </p>
                 </div>
                 <span className="text-sm font-medium text-foreground">
-                  ${(item.price * item.qty).toLocaleString()}
+                  {formatPrice(item.price * item.qty)}
                 </span>
               </div>
             ))}
@@ -417,35 +522,40 @@ export default function CheckoutPage() {
             <div className="flex items-center justify-between text-muted-foreground">
               <span>Subtotal</span>
               <span className="font-medium text-foreground">
-                ${subtotal.toLocaleString()}
+                {formatPrice(subtotal)}
               </span>
             </div>
             <div className="flex items-center justify-between text-muted-foreground">
               <span>Shipping</span>
               <span className="font-medium text-foreground">
-                {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
+                {shipping === 0 ? "Free" : formatPrice(shipping)}
               </span>
             </div>
             <div className="flex items-center justify-between text-muted-foreground">
-              <span>LuxeFrame service fee</span>
-              <span className="font-medium text-foreground">$0.00</span>
+              <span>Essentials service fee</span>
+              <span className="font-medium text-foreground">
+                {formatPrice(0)}
+              </span>
             </div>
           </div>
 
           <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-            <span className="text-base font-bold text-foreground">Total</span>
-            <span className="text-lg font-bold text-foreground">
-              ${total.toLocaleString()}
+            <span className="text-base font-medium text-foreground">Total</span>
+            <span className="text-lg font-medium text-foreground">
+              {formatPrice(total)}
             </span>
           </div>
 
-          <Button
+          <TextureButton
             type="submit"
-            className="mt-5 w-full rounded-full py-3 text-sm font-semibold"
-            onClick={() => setPlaced(true)}
+            form="checkout-form"
+            className="mt-5 hidden w-full lg:inline-flex"
+            disabled={pending}
           >
-            Place order — ${total.toLocaleString()}
-          </Button>
+            {pending
+              ? "Placing order..."
+              : `Place order — ${formatPrice(total)}`}
+          </TextureButton>
 
           <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
             <ShieldCheck size={13} className="text-tertiary" />

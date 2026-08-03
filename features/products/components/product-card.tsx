@@ -1,49 +1,41 @@
-"use client";
+import Image from "next/image";
+import { formatPrice } from "@/lib/utils";
+import type { StoreProduct } from "@/types";
 
-import { useState } from "react";
-import { ShopProduct } from "@/types";
-import { Button } from "@/components/ui/button";
-import { Heart, Star } from "reicon-react";
-
-export default function ProductCard({ product }: { product: ShopProduct }) {
-  const [liked, setLiked] = useState(product.liked ?? false);
-
+export default function ProductCard({ product }: { product: StoreProduct }) {
   return (
-    <div className="flex flex-col gap-3 group cursor-pointer">
+    <div className="group flex cursor-pointer flex-col gap-3">
       <div className="relative aspect-4/3 overflow-hidden rounded-xl bg-muted">
-        <img
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          src={product.image}
-          alt={product.name}
-        />
-        <Button
-          variant="secondary"
-          size="icon"
-          className="absolute right-3 top-3 h-8 w-8 rounded-full bg-background/80 text-foreground shadow-sm backdrop-blur-sm transition-transform hover:bg-background"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setLiked(!liked);
-          }}
-        >
-          <Heart size={18} weight={liked ? "Filled" : "Outline"} />
-        </Button>
+        {product.image ? (
+          <Image
+            fill
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            src={product.image}
+            alt={product.name}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
+            No image
+          </div>
+        )}
+        {product.stock === 0 && (
+          <span className="absolute left-3 top-3 rounded-full bg-background/80 px-2.5 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
+            Sold out
+          </span>
+        )}
       </div>
-      <div className="flex justify-between items-start">
-        <div className="flex flex-col">
-          <span className="text-sm font-medium text-foreground">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex min-w-0 flex-col">
+          <span className="truncate text-sm font-medium text-foreground">
             {product.name}
           </span>
-          <span className="text-sm text-muted-foreground">
-            {product.description}
+          <span className="truncate text-sm text-muted-foreground">
+            {product.type ?? product.category ?? product.description}
           </span>
           <span className="mt-1 text-sm font-medium text-foreground">
-            ${product.price}
+            {formatPrice(product.price)}
           </span>
-        </div>
-        <div className="flex items-center gap-1">
-          <Star size={16} weight="Filled" className="text-primary" />
-          <span className="text-sm text-foreground">{product.rating}</span>
         </div>
       </div>
     </div>

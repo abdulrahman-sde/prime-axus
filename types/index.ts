@@ -24,13 +24,13 @@ export interface Order {
 export type ProductStatus = 'Active' | 'Draft' | 'Archived';
 
 export interface InventoryProduct {
-  id: number;
+  id: string;
   name: string;
-  type: string;
+  type: string | null;
   status: ProductStatus;
   stock: number | null;
   price: number;
-  image: string;
+  image: string | null;
 }
 
 export interface Category {
@@ -48,6 +48,18 @@ export interface ShopProduct {
   image: string;
   badge?: string;
   liked?: boolean;
+}
+
+export interface StoreProduct {
+  id: string;
+  name: string;
+  description: string | null;
+  type: string | null;
+  category: string | null;
+  sizes: string[];
+  price: number;
+  stock: number | null;
+  image: string | null;
 }
 
 export interface ProductFeature {
@@ -79,13 +91,4 @@ export interface ProductDetail {
   shipping: number;
   serviceFee: number;
   sizes: string[];
-}
-
-export interface NewProductForm {
-  title: string;
-  description: string;
-  category: string;
-  price: string;
-  limitedEdition: boolean;
-  publicVisibility: boolean;
 }
