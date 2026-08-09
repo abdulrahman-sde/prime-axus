@@ -7,6 +7,9 @@ export interface TopCategory {
 }
 
 const CATALOG: { name: string; image: string }[] = [
+  { name: "Stitch", image: U("photo-1525507119028-ed4c629a60a3") },
+  { name: "Unstitched", image: U("photo-1509631179647-0177331693ae") },
+  { name: "Daily usage essentials", image: U("photo-1523381210434-271e8be1f52b") },
   { name: "T-Shirts", image: U("photo-1521572163474-6864f9cf17ab") },
   { name: "Hoodies", image: U("photo-1556821840-3a63f95609a7") },
   { name: "Jeans & Pants", image: U("photo-1542272604-787c3835535d") },

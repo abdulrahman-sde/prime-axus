@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import { CartProvider } from "@/hooks/use-cart";
 import { getTopCategories } from "@/lib/categories";
 
@@ -19,6 +20,7 @@ export default async function PublicLayout({
         </Suspense>
         <main className="flex-1">{children}</main>
         <Footer />
+        <WhatsAppButton />
       </div>
     </CartProvider>
   );

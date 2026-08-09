@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { At, Call, Location } from "reicon-react";
+import { Call, Location } from "reicon-react";
 
 const footerLinks: Record<string, { label: string; href?: string }[]> = {
   shop: [
@@ -17,9 +17,8 @@ const footerLinks: Record<string, { label: string; href?: string }[]> = {
 };
 
 const contactInfo = [
-  { icon: At, label: "hello@essentials.pk" },
-  { icon: Call, label: "+92 300 1234567" },
-  { icon: Location, label: "Lahore, Pakistan" },
+  { icon: Call, label: "03457761146" },
+  { icon: Location, label: "Faisalabad, Pakistan" },
 ];
 
 export default function Footer() {
@@ -46,9 +45,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="flex flex-col gap-2">
-          <span className="font-semibold text-sm text-foreground">
-            Support
-          </span>
+          <span className="font-semibold text-sm text-foreground">Support</span>
           {footerLinks.support.map((link) => (
             <Link
               key={link.label}
