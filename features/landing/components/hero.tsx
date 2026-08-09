@@ -35,8 +35,8 @@ export default function Hero() {
             className="animate-rise max-w-md text-base leading-7 text-white/85 sm:text-lg"
             style={{ animationDelay: "0.25s" }}
           >
-            T-shirts, hoodies, and sneakers. Hand-picked for fit, fabric, and
-            feel that lasts.
+            Stitched, unstitched, and daily essentials. Hand-picked for fit,
+            fabric, and feel that lasts.
           </p>
           <div
             className="animate-rise pt-2"

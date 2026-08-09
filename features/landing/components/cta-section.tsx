@@ -11,13 +11,13 @@ export default function CtaSection() {
           fill
           priority
           sizes="100vw"
-          src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?q=80&w=1920&auto=format&fit=crop"
+          src="https://images.unsplash.com/photo-1743049755958-00221eab097f?q=80&w=1920&auto=format&fit=crop"
           alt="Curated apparel collection"
-          className="object-cover"
+          className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-linear-to-r from-foreground/95 via-foreground/75 to-foreground/20" />
 
-        <div className="relative px-6 py-20 sm:px-12 sm:py-24 lg:px-16 lg:py-28">
+        <div className="relative px-6 py-20 sm:px-12 sm:py-24 lg:px-16 lg:pt-22 lg:pb-18">
           <div className="max-w-xl space-y-6">
             <p className="text-xs font-medium uppercase tracking-[0.28em] text-background/80">
               The Essentials edit
@@ -27,15 +27,15 @@ export default function CtaSection() {
             </h2>
             <p className="max-w-md text-base leading-7 text-background/80 sm:text-lg">
               Every piece in our collection is hand-picked for fit, fabric, and
-              feel that lasts — from wardrobe basics to statement fits,
-              delivered across Pakistan.
+              feel that lasts — from stitched suits to unstitched material and
+              everyday essentials, delivered across Pakistan.
             </p>
             <div className="pt-2">
               <TextureButton
                 variant="inverse"
-                render={<Link href="/dashboard/products/new" />}
+                render={<Link href="/products" />}
               >
-                Sell your apparel
+                See the collection
                 <ArrowRight size={18} />
               </TextureButton>
             </div>

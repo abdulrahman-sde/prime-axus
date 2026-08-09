@@ -3,11 +3,12 @@ import { Call, Location } from "reicon-react";
 
 const footerLinks: Record<string, { label: string; href?: string }[]> = {
   shop: [
-    { label: "T-Shirts", href: "/products?category=T-Shirts" },
-    { label: "Hoodies", href: "/products?category=Hoodies" },
-    { label: "Jeans & Pants", href: "/products?category=Jeans%20%26%20Pants" },
-    { label: "Shoes", href: "/products?category=Shoes" },
-    { label: "Accessories", href: "/products?category=Accessories" },
+    { label: "Stitch", href: "/products?category=Stitch" },
+    { label: "Unstitched", href: "/products?category=Unstitched" },
+    {
+      label: "Daily usage essentials",
+      href: "/products?category=Daily%20usage%20essentials",
+    },
   ],
   support: [
     { label: "Help Center" },

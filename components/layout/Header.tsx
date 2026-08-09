@@ -50,7 +50,7 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
             <Search size={16} className="shrink-0 text-muted-foreground" />
             <input
               name="search"
-              placeholder="Search for shirts, hoodies, sneakers..."
+              placeholder="Search suits, fabric, essentials..."
               className="h-4 w-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
             />
             <TextureButton type="submit" size="sm" className="rounded-full">
@@ -169,7 +169,7 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
           <Search size={16} className="shrink-0 text-muted-foreground" />
           <input
             name="search"
-            placeholder="Search for shirts, hoodies, sneakers..."
+            placeholder="Search suits, fabric, essentials..."
             className="h-8 w-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
           />
         </form>

@@ -7,19 +7,9 @@ export interface TopCategory {
 }
 
 const CATALOG: { name: string; image: string }[] = [
-  { name: "Stitch", image: U("photo-1525507119028-ed4c629a60a3") },
-  { name: "Unstitched", image: U("photo-1509631179647-0177331693ae") },
-  { name: "Daily usage essentials", image: U("photo-1523381210434-271e8be1f52b") },
-  { name: "T-Shirts", image: U("photo-1521572163474-6864f9cf17ab") },
-  { name: "Hoodies", image: U("photo-1556821840-3a63f95609a7") },
-  { name: "Jeans & Pants", image: U("photo-1542272604-787c3835535d") },
-  { name: "Shoes", image: U("photo-1549298916-b41d501d3772") },
-  { name: "Shirts", image: U("photo-1596755094514-f87e34085b2c") },
-  { name: "Kurtas", image: U("photo-1441986300917-64674bd600d8") },
-  { name: "Jackets", image: U("photo-1551028719-00167b16eac5") },
-  { name: "Sweatshirts", image: U("photo-1618354691373-d851c5c3a990") },
-  { name: "Shorts", image: U("photo-1591195853828-11db59a44f6b") },
-  { name: "Accessories", image: U("photo-1523170335258-f5ed11844a49") },
+  { name: "Stitch", image: U("photo-1445205170230-053b83016050") },
+  { name: "Unstitched", image: U("photo-1771098206944-ac1633b8276d") },
+  { name: "Daily usage essentials", image: U("photo-1770801153497-959241fce3ae") },
 ];
 
 function U(id: string) {

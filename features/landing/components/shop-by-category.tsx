@@ -73,7 +73,7 @@ export default function ShopByCategory({
           <Link
             key={tile.name}
             href={categoryHref(tile.name)}
-            className="group relative aspect-square overflow-hidden rounded-2xl bg-muted"
+            className="group relative aspect-square overflow-hidden rounded-2xl bg-muted md:col-span-2 md:aspect-[2/1]"
           >
             <Image
               fill

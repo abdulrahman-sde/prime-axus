@@ -7,16 +7,6 @@ export const CATEGORIES = [
   "Stitch",
   "Unstitched",
   "Daily usage essentials",
-  "T-Shirts",
-  "Shirts",
-  "Jeans & Pants",
-  "Shorts",
-  "Hoodies",
-  "Jackets",
-  "Kurtas",
-  "Formal",
-  "Shoes",
-  "Accessories",
 ] as const;
 
 export const PRODUCT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const;

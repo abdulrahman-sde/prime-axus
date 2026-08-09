@@ -10,7 +10,7 @@ export default async function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const categories = await getTopCategories(8);
+  const categories = await getTopCategories(3);
 
   return (
     <CartProvider>
