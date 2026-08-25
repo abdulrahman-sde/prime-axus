@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Call, Envelope } from "reicon-react";
+import { Call, Envelope, Location } from "reicon-react";
 import BrandLogo from "@/components/shared/brand-logo";
 import FooterSupportLinks from "@/components/layout/footer-support";
+import SocialLinks from "@/components/layout/social-links";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE_DISPLAY,
@@ -26,6 +27,12 @@ export default function Footer() {
             Curated goods that make everyday life easier — hand-picked for
             people who buy once and buy right.
           </p>
+          <div className="flex flex-col gap-2.5">
+            <span className="font-semibold text-sm text-foreground">
+              Follow us
+            </span>
+            <SocialLinks className="flex items-center gap-2.5" />
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <span className="font-semibold text-sm text-foreground">Shop</span>
@@ -60,9 +67,13 @@ export default function Footer() {
               <Call size={15} className="shrink-0" />
               {CONTACT_PHONE_DISPLAY}
             </a>
+            <span className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Location size={15} className="shrink-0" />
+              Austin, Texas, USA
+            </span>
           </div>
           <p className="text-sm leading-5 text-muted-foreground">
-            Mon–Sat, 10am–8pm
+            Open 24/7
           </p>
         </div>
       </div>

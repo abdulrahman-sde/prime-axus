@@ -66,12 +66,12 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
             action="/products"
             method="get"
             role="search"
-            className="mx-auto hidden w-full max-w-xl items-center gap-2 rounded-full border border-border bg-muted py-1 pl-4 pr-1.5 transition-all focus-within:border-primary focus-within:ring-1 focus-within:ring-primary md:flex"
+            className="mx-auto hidden w-full max-w-sm items-center gap-2 rounded-full border border-border bg-muted py-1 pl-3.5 pr-1.5 transition-all focus-within:border-primary focus-within:ring-1 focus-within:ring-primary md:flex lg:max-w-md"
           >
             <Search size={16} className="shrink-0 text-muted-foreground" />
             <input
               name="search"
-              placeholder="Search products..."
+              placeholder="Search..."
               className="h-4 w-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
             />
             <TextureButton type="submit" size="sm" className="rounded-full">

@@ -6,6 +6,8 @@ import ShopByCategory, {
   type CategoryTile,
 } from "./components/shop-by-category";
 import TrustStrip from "./components/trust-strip";
+import StatsStrip from "./components/stats-strip";
+import Testimonials from "./components/testimonials";
 import CtaSection from "./components/cta-section";
 
 export default function LandingPage({
@@ -22,6 +24,8 @@ export default function LandingPage({
         <TrustStrip />
         <FeaturedProducts products={products} />
         <ShopByCategory categories={categories} />
+        <StatsStrip />
+        <Testimonials />
         <CtaSection />
       </main>
     </div>

@@ -83,6 +83,9 @@ export default function Hero({
         <Image
           alt=""
           fill
+          priority
+          loading="eager"
+          fetchPriority="high"
           sizes="100vw"
           src="/landing/hero.jpg"
           className="object-cover"
