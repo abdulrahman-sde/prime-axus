@@ -58,12 +58,12 @@ function DialogContent({
             render={
               <TextureButton
                 variant="secondary"
-                className="absolute top-3 right-3"
+                className="absolute top-2 right-2 h-6 w-6"
                 size="icon"
               />
             }
         >
-          <XIcon />
+          <XIcon size={13} />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Popup>

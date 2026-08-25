@@ -1,8 +1,9 @@
 "use client";
 
+import { Fragment } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Menu2, Search, ShoppingCart, User } from "reicon-react";
+import { ChevronDown, Menu2, Search, ShoppingCart, User } from "reicon-react";
 import {
   Sheet,
   SheetContent,
@@ -10,10 +11,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Menu,
+  MenuLinkItem,
+  MenuPopup,
+  MenuPositioner,
+  MenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { TextureButton } from "@/components/ui/texture-button";
+import BrandLogo from "@/components/shared/brand-logo";
 import { useCart } from "@/hooks/use-cart";
 import { cn } from "@/lib/utils";
-import type { TopCategory } from "@/lib/categories";
+import type { TopCategory } from "@/lib/category-tree";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -24,21 +33,33 @@ function categoryHref(name: string) {
   return `/products?category=${encodeURIComponent(name)}`;
 }
 
+function subCategoryLabel(count: number) {
+  return count > 0 ? `${count}` : "Coming soon";
+}
+
 export default function Header({ categories }: { categories: TopCategory[] }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { count } = useCart();
   const activeCategory = searchParams.get("category");
 
+  const isGroupActive = (category: TopCategory) =>
+    pathname.startsWith("/products") &&
+    activeCategory !== null &&
+    (activeCategory === category.name ||
+      category.children?.some((c) => c.name === activeCategory));
+
   return (
     <header>
       <div className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <Link
-            className="shrink-0 text-lg font-semibold tracking-tight text-primary"
+            className="shrink-0 flex items-center -mt-2 gap-1"
             href="/"
+            aria-label="PrimeAxis home"
           >
-            Essentials
+            <BrandLogo variant="mark" className="h-8 w-8" />
+            <BrandLogo variant="wordmark" className="h-12 mt-1" />
           </Link>
 
           <form
@@ -50,7 +71,7 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
             <Search size={16} className="shrink-0 text-muted-foreground" />
             <input
               name="search"
-              placeholder="Search suits, fabric, essentials..."
+              placeholder="Search products..."
               className="h-4 w-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
             />
             <TextureButton type="submit" size="sm" className="rounded-full">
@@ -94,7 +115,9 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
               </SheetTrigger>
               <SheetContent side="right" className="w-72">
                 <SheetHeader>
-                  <SheetTitle>Essentials</SheetTitle>
+                  <SheetTitle className="flex items-center">
+                    <BrandLogo variant="wordmark" className="h-6" />
+                  </SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-1 px-4">
                   {navLinks.map((link) => {
@@ -125,16 +148,34 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
                         Categories
                       </p>
                       {categories.map((category) => (
-                        <Link
-                          key={category.name}
-                          href={categoryHref(category.name)}
-                          className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-                        >
-                          <span>{category.name}</span>
-                          <span className="text-xs font-medium text-muted-foreground">
-                            {category.count}
-                          </span>
-                        </Link>
+                        <Fragment key={category.name}>
+                          <Link
+                            href={categoryHref(category.name)}
+                            className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                          >
+                            <span>{category.name}</span>
+                            <span className="text-xs font-medium text-muted-foreground">
+                              {category.count}
+                            </span>
+                          </Link>
+                          {category.children?.map((child) => (
+                            <Link
+                              key={child.name}
+                              href={categoryHref(child.name)}
+                              className={cn(
+                                "ml-3 flex items-center justify-between rounded-lg border-l border-border py-2 pl-4 pr-3 text-sm transition-colors",
+                                activeCategory === child.name
+                                  ? "text-primary"
+                                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                              )}
+                            >
+                              <span>{child.name}</span>
+                              <span className="text-xs font-medium">
+                                {subCategoryLabel(child.count)}
+                              </span>
+                            </Link>
+                          ))}
+                        </Fragment>
                       ))}
                     </>
                   )}
@@ -169,7 +210,7 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
           <Search size={16} className="shrink-0 text-muted-foreground" />
           <input
             name="search"
-            placeholder="Search suits, fabric, essentials..."
+            placeholder="Search products..."
             className="h-8 w-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
           />
         </form>
@@ -191,21 +232,79 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
               >
                 All Products
               </Link>
-              {categories.map((category) => (
-                <Link
-                  key={category.name}
-                  href={categoryHref(category.name)}
-                  className={cn(
-                    "rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors",
-                    pathname.startsWith("/products") &&
-                      activeCategory === category.name
-                      ? "text-primary"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  )}
-                >
-                  {category.name}
-                </Link>
-              ))}
+              {categories.map((category) =>
+                category.children?.length ? (
+                  <Menu key={category.name}>
+                    <MenuTrigger
+                      className={cn(
+                        "flex items-center gap-1 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors",
+                        isGroupActive(category)
+                          ? "text-primary"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                      )}
+                    >
+                      {category.name}
+                      <ChevronDown size={14} />
+                    </MenuTrigger>
+                    <MenuPositioner align="start">
+                      <MenuPopup className="min-w-60">
+                        <MenuLinkItem
+                          render={
+                            <Link href={categoryHref(category.name)}>
+                              <span className="flex-1 text-sm font-medium">
+                                All {category.name}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {category.count}
+                              </span>
+                            </Link>
+                          }
+                        />
+                        <div className="mx-2 my-1 h-px bg-border" />
+                        {category.children.map((child) => (
+                          <MenuLinkItem
+                            key={child.name}
+                            render={<Link href={categoryHref(child.name)} />}
+                          >
+                            <span
+                              className={cn(
+                                "flex-1 text-sm",
+                                activeCategory === child.name && "text-primary",
+                              )}
+                            >
+                              {child.name}
+                            </span>
+                            <span
+                              className={cn(
+                                "text-xs",
+                                child.count > 0
+                                  ? "text-muted-foreground"
+                                  : "font-medium text-primary",
+                              )}
+                            >
+                              {subCategoryLabel(child.count)}
+                            </span>
+                          </MenuLinkItem>
+                        ))}
+                      </MenuPopup>
+                    </MenuPositioner>
+                  </Menu>
+                ) : (
+                  <Link
+                    key={category.name}
+                    href={categoryHref(category.name)}
+                    className={cn(
+                      "rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-colors",
+                      pathname.startsWith("/products") &&
+                        activeCategory === category.name
+                        ? "text-primary"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    )}
+                  >
+                    {category.name}
+                  </Link>
+                ),
+              )}
             </div>
           </nav>
         )}

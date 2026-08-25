@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DataTablePagination from "@/components/shared/DataTablePagination";
 import SidebarToggle from "@/components/shared/SidebarToggle";
+import BrandLogo from "@/components/shared/brand-logo";
 import { usePagination } from "@/hooks/usePagination";
 import { Add, Box, Check, Edit, Notification, X } from "reicon-react";
 import { TextureButton } from "@/components/ui/texture-button";
@@ -270,7 +271,7 @@ export default function InventoryPage({
                           {isEditing ? (
                             <div className="relative w-28">
                               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                                Rs
+                                $
                               </span>
                               <input
                                 className="w-full rounded-lg border border-border py-1 pl-7 pr-2.5 text-sm outline-none transition-colors focus:border-primary"
@@ -346,10 +347,9 @@ export default function InventoryPage({
       <footer className="mt-3xl border-t border-border bg-background">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div>
-            <span className="font-medium text-lg text-primary">Essentials</span>
+            <BrandLogo variant="wordmark" className="h-6" />
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              A curated apparel marketplace — hand-picked clothes and essentials
-              for people who buy once and buy right.
+              A curated marketplace — hand-picked goods, sold once and sold right.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -402,7 +402,7 @@ export default function InventoryPage({
         </div>
         <div className="border-t border-border px-4 py-4 text-center sm:px-6 lg:px-8">
           <p className="text-sm text-muted-foreground">
-            &copy; 2024 Essentials. All rights reserved.
+            &copy; 2024 PrimeAxis. All rights reserved.
           </p>
         </div>
       </footer>

@@ -25,16 +25,10 @@ export default function ProductDetail({ product }: { product: StoreProduct }) {
 
   const sizeSelector = product.sizes.length > 0 && (
     <div>
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2">
         <h2 className="text-sm font-semibold tracking-tight text-foreground">
           Size
         </h2>
-        <button
-          type="button"
-          className="text-xs font-medium text-primary hover:underline"
-        >
-          Size guide
-        </button>
       </div>
       <div className="flex flex-wrap gap-2">
         {product.sizes.map((size) => (
@@ -140,7 +134,7 @@ export default function ProductDetail({ product }: { product: StoreProduct }) {
             </div>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <Verified size={18} className="shrink-0 text-primary" />
-              <span>Essentials Verified — every unit checked before dispatch</span>
+              <span>Quality Verified — every unit checked before dispatch</span>
             </div>
           </div>
 

@@ -1,25 +1,17 @@
 import Link from "next/link";
-import { Call, Location } from "reicon-react";
+import { Call, Envelope } from "reicon-react";
+import BrandLogo from "@/components/shared/brand-logo";
+import FooterSupportLinks from "@/components/layout/footer-support";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_HREF,
+} from "@/constants/contact";
 
-const footerLinks: Record<string, { label: string; href?: string }[]> = {
-  shop: [
-    { label: "Stitch", href: "/products?category=Stitch" },
-    { label: "Unstitched", href: "/products?category=Unstitched" },
-    {
-      label: "Daily usage essentials",
-      href: "/products?category=Daily%20usage%20essentials",
-    },
-  ],
-  support: [
-    { label: "Help Center" },
-    { label: "Shipping & Delivery" },
-    { label: "Returns & Exchanges" },
-  ],
-};
-
-const contactInfo = [
-  { icon: Call, label: "03457761146" },
-  { icon: Location, label: "Faisalabad, Pakistan" },
+const shopLinks = [
+  { label: "Home & Kitchen", href: "/products?category=Home%20%26%20Kitchen" },
+  { label: "Office Products", href: "/products?category=Office%20Products" },
+  { label: "Pet Supplies", href: "/products?category=Pet%20Supplies" },
 ];
 
 export default function Footer() {
@@ -27,19 +19,21 @@ export default function Footer() {
     <footer className="mt-24 border-t border-border bg-background">
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="flex flex-col gap-4">
-          <span className="font-semibold text-foreground">Essentials</span>
+          <Link href="/" aria-label="PrimeAxis home" className="w-fit">
+            <BrandLogo variant="wordmark" className="h-12 -mt-4" />
+          </Link>
           <p className="text-sm text-muted-foreground">
-            Curated apparel and everyday essentials — hand-picked fits for
+            Curated goods that make everyday life easier — hand-picked for
             people who buy once and buy right.
           </p>
         </div>
         <div className="flex flex-col gap-2">
           <span className="font-semibold text-sm text-foreground">Shop</span>
-          {footerLinks.shop.map((link) => (
+          {shopLinks.map((link) => (
             <Link
               key={link.label}
               className="text-sm text-muted-foreground transition-all hover:text-foreground hover:underline"
-              href={link.href ?? "#"}
+              href={link.href}
             >
               {link.label}
             </Link>
@@ -47,28 +41,25 @@ export default function Footer() {
         </div>
         <div className="flex flex-col gap-2">
           <span className="font-semibold text-sm text-foreground">Support</span>
-          {footerLinks.support.map((link) => (
-            <Link
-              key={link.label}
-              className="text-sm text-muted-foreground transition-all hover:text-foreground hover:underline"
-              href={link.href ?? "#"}
-            >
-              {link.label}
-            </Link>
-          ))}
+          <FooterSupportLinks />
         </div>
         <div className="flex flex-col gap-4">
           <span className="font-semibold text-sm text-foreground">Contact</span>
           <div className="flex flex-col gap-2.5">
-            {contactInfo.map((item) => (
-              <span
-                key={item.label}
-                className="flex items-center gap-2 text-sm text-muted-foreground"
-              >
-                <item.icon size={15} className="shrink-0" />
-                {item.label}
-              </span>
-            ))}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Envelope size={15} className="shrink-0" />
+              {CONTACT_EMAIL}
+            </a>
+            <a
+              href={CONTACT_PHONE_HREF}
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Call size={15} className="shrink-0" />
+              {CONTACT_PHONE_DISPLAY}
+            </a>
           </div>
           <p className="text-sm leading-5 text-muted-foreground">
             Mon–Sat, 10am–8pm
@@ -77,7 +68,7 @@ export default function Footer() {
       </div>
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-between gap-4 border-t border-border px-6 py-6 text-sm md:flex-row">
         <span className="text-muted-foreground">
-          &copy; {new Date().getFullYear()} Essentials. All rights reserved.
+          &copy; {new Date().getFullYear()} PrimeAxis. All rights reserved.
         </span>
         <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
           <Link className="hover:underline" href="#">

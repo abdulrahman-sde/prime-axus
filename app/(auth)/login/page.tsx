@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { ShieldCheck } from "reicon-react";
+import BrandLogo from "@/components/shared/brand-logo";
 import { LoginForm } from "@/features/auth/components/login-form";
 
 export default function LoginPage() {
@@ -8,8 +9,8 @@ export default function LoginPage() {
     <main className="flex flex-1 flex-col px-5 py-10 sm:px-6 sm:py-16">
       <div className="m-auto w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <Link href="/" className="text-2xl font-semibold text-primary">
-            Essentials
+          <Link href="/" className="flex justify-center" aria-label="PrimeAxis home">
+            <BrandLogo variant="wordmark" className="h-9" />
           </Link>
           <h1 className="mt-6 text-2xl font-semibold tracking-tight text-foreground">
             Welcome back

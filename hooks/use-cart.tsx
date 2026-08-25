@@ -24,7 +24,7 @@ type CartContextValue = {
   clear: () => void;
 };
 
-const STORAGE_KEY = "essentials.cart";
+const STORAGE_KEY = "primeaxis.cart";
 
 const CartContext = createContext<CartContextValue | null>(null);
 

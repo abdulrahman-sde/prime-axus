@@ -19,7 +19,7 @@ export default function FeaturedProducts({
             Featured this week
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            This week&apos;s most-wanted pieces, picked by our team.
+            This week&apos;s most-wanted finds across the store.
           </p>
         </div>
         {products.length > 0 && (
@@ -35,8 +35,8 @@ export default function FeaturedProducts({
       {products.length === 0 ? (
         <EmptyPanel
           icon={ShoppingCart}
-          title="New drops are on the way"
-          description="Featured pieces appear here as soon as they're listed. Check back soon."
+          title="New arrivals are on the way"
+          description="Featured products appear here as soon as they're listed. Check back soon."
         />
       ) : (
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">

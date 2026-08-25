@@ -1,15 +1,12 @@
 import { z } from "zod";
+import { HOME_SUBCATEGORIES } from "@/lib/category-tree";
 
 export const MAX_IMAGE_SIZE = 1024 * 1024;
 export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-export const CATEGORIES = [
-  "Stitch",
-  "Unstitched",
-  "Daily usage essentials",
-] as const;
+export const CATEGORIES = [...HOME_SUBCATEGORIES] as const;
 
-export const PRODUCT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const;
+export const PRODUCT_SIZES = ["S", "M", "L"] as const;
 
 const productFields = {
   name: z
@@ -31,8 +28,9 @@ const productFields = {
     .enum(CATEGORIES, { error: "Select a category" })
     .optional(),
   sizes: z
-    .array(z.enum(PRODUCT_SIZES), { error: "Select at least one size" })
-    .min(1, "Select at least one size"),
+    .array(z.enum(PRODUCT_SIZES), { error: "Invalid size selected" })
+    .optional()
+    .default([]),
   price: z.coerce
     .number({ error: "Enter a valid price" })
     .positive("Enter a valid price")

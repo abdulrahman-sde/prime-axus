@@ -1,7 +1,7 @@
 import { Order } from '@/types';
 
 export const ordersSummary = {
-  totalSales: 'Rs 1,248,000.00',
+  totalSales: '$1,248,000.00',
   pendingOrders: 8,
   fulfillmentRate: '98.2%',
 };

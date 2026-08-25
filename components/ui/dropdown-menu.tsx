@@ -14,15 +14,20 @@ function MenuTrigger({ ...props }: MenuPrimitive.Trigger.Props) {
 }
 
 function MenuPositioner({
+  children,
   className,
   ...props
 }: MenuPrimitive.Positioner.Props) {
   return (
-    <MenuPrimitive.Positioner
-      data-slot="menu-positioner"
-      className={cn("z-50", className)}
-      {...props}
-    />
+    <MenuPrimitive.Portal>
+      <MenuPrimitive.Positioner
+        data-slot="menu-positioner"
+        className={cn("z-50", className)}
+        {...props}
+      >
+        {children}
+      </MenuPrimitive.Positioner>
+    </MenuPrimitive.Portal>
   )
 }
 

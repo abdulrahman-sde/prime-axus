@@ -1,13 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Tag } from "reicon-react";
-import EmptyPanel from "./empty-panel";
+import { ArrowRight } from "reicon-react";
+import { HOME_SUBCATEGORIES } from "@/lib/category-tree";
 
 export interface CategoryTile {
   name: string;
   image: string;
   count: number;
 }
+
+const CATEGORY_IMAGES: Record<string, string> = {
+  "Home & Kitchen": "/landing/category-kitchen.png",
+  "Office Products": "/landing/category-office.png",
+  "Pet Supplies": "/landing/category-pets.png",
+};
 
 function categoryHref(name: string) {
   return `/products?category=${encodeURIComponent(name)}`;
@@ -18,7 +24,15 @@ export default function ShopByCategory({
 }: {
   categories: CategoryTile[];
 }) {
-  const [lead, ...rest] = categories;
+  const merged = HOME_SUBCATEGORIES.map((name) => {
+    const existing = categories.find((c) => c.name === name);
+    return {
+      name,
+      image: CATEGORY_IMAGES[name],
+      count: existing?.count ?? 0,
+    };
+  });
+  const [lead, ...rest] = merged;
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -27,21 +41,14 @@ export default function ShopByCategory({
           Shop by category
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Jump straight to your fit.
+          Three departments, one cart. Jump straight in.
         </p>
       </div>
 
-      {categories.length === 0 ? (
-        <EmptyPanel
-          icon={Tag}
-          title="Categories are filling up"
-          description="Shop-by-category tiles appear here once pieces are listed. Check back soon."
-        />
-      ) : (
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <Link
           href={categoryHref(lead.name)}
-          className="group relative col-span-2 aspect-[16/10] overflow-hidden rounded-2xl bg-muted md:row-span-2 md:aspect-auto"
+          className="group relative col-span-2 aspect-16/10 overflow-hidden rounded-2xl bg-muted md:row-span-2 md:aspect-auto"
         >
           <Image
             fill
@@ -58,7 +65,7 @@ export default function ShopByCategory({
               </p>
               <p className="text-sm text-white/75">
                 {lead.count > 0
-                  ? `${lead.count} ${lead.count === 1 ? "piece" : "pieces"}`
+                  ? `${lead.count} ${lead.count === 1 ? "product" : "products"}`
                   : "Coming soon"}
               </p>
             </div>
@@ -73,7 +80,7 @@ export default function ShopByCategory({
           <Link
             key={tile.name}
             href={categoryHref(tile.name)}
-            className="group relative aspect-square overflow-hidden rounded-2xl bg-muted md:col-span-2 md:aspect-[2/1]"
+            className="group relative aspect-square overflow-hidden rounded-2xl bg-muted md:col-span-2 md:aspect-2/1"
           >
             <Image
               fill
@@ -94,8 +101,7 @@ export default function ShopByCategory({
             </div>
           </Link>
         ))}
-        </div>
-      )}
+      </div>
     </section>
   );
 }

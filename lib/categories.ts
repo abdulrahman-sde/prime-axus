@@ -1,20 +1,11 @@
 import { prisma } from "@/lib/prisma";
+import {
+  CATEGORY_TREE,
+  categoryChildren,
+  type TopCategory,
+} from "@/lib/category-tree";
 
-export interface TopCategory {
-  name: string;
-  image: string;
-  count: number;
-}
-
-const CATALOG: { name: string; image: string }[] = [
-  { name: "Stitch", image: U("photo-1445205170230-053b83016050") },
-  { name: "Unstitched", image: U("photo-1771098206944-ac1633b8276d") },
-  { name: "Daily usage essentials", image: U("photo-1770801153497-959241fce3ae") },
-];
-
-function U(id: string) {
-  return `https://images.unsplash.com/${id}?w=900&q=80&auto=format&fit=crop`;
-}
+export type { TopCategory };
 
 export async function getTopCategories(limit = 5): Promise<TopCategory[]> {
   const products = await prisma.product.findMany({
@@ -30,11 +21,27 @@ export async function getTopCategories(limit = 5): Promise<TopCategory[]> {
     if (!images.has(p.category) && p.image) images.set(p.category, p.image);
   }
 
-  return CATALOG.map((c) => ({
-    ...c,
-    image: images.get(c.name) ?? c.image,
-    count: counts.get(c.name) ?? 0,
-  }))
+  return CATEGORY_TREE.map((c) => {
+    const children = categoryChildren(c.name);
+    const ownCount = counts.get(c.name) ?? 0;
+    const childrenCount = children.reduce(
+      (sum, name) => sum + (counts.get(name) ?? 0),
+      0,
+    );
+    return {
+      name: c.name,
+      image: images.get(c.name) ?? c.image,
+      count: ownCount + childrenCount,
+      ...(children.length
+        ? {
+            children: children.map((name) => ({
+              name,
+              count: counts.get(name) ?? 0,
+            })),
+          }
+        : {}),
+    };
+  })
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 }

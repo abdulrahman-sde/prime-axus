@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useForm, useWatch, type Resolver } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import SidebarToggle from "@/components/shared/SidebarToggle";
+import BrandLogo from "@/components/shared/brand-logo";
 import { TextureButton } from "@/components/ui/texture-button";
 import { Input } from "@/components/ui/input";
 import { Camera, Globe, ImagePlus, InfoCircle, Send } from "reicon-react";
@@ -223,7 +224,7 @@ export default function AddProductPage() {
                 </label>
                 <Input
                   id="name"
-                  placeholder="e.g., Whispers of the Nordic Coast"
+                  placeholder="e.g., Cast Iron Skillet, 26cm"
                   type="text"
                   aria-invalid={!!errors.name}
                   {...register("name")}
@@ -245,7 +246,7 @@ export default function AddProductPage() {
                 <textarea
                   id="description"
                   className="w-full rounded-lg border border-border px-4 py-2 text-sm outline-none transition-all focus:border-primary focus:ring-1 focus:ring-primary"
-                  placeholder="Describe the fabric, fit, and who this piece is for..."
+                  placeholder="Describe the materials, dimensions, and who this product is for..."
                   rows={4}
                   {...register("description")}
                 />
@@ -260,7 +261,7 @@ export default function AddProductPage() {
                 </label>
                 <Input
                   id="type"
-                  placeholder="e.g., Oversized Fit"
+                  placeholder="e.g., Stainless steel"
                   type="text"
                   {...register("type")}
                 />
@@ -276,7 +277,7 @@ export default function AddProductPage() {
                   </label>
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-                      Rs
+                      $
                     </span>
                     <Input
                       id="price"
@@ -350,7 +351,7 @@ export default function AddProductPage() {
 
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-foreground">
-                  Sizes
+                  Sizes (optional)
                 </label>
                 <div className="flex flex-wrap gap-2 pt-2">
                   {PRODUCT_SIZES.map((size) => (
@@ -427,10 +428,9 @@ export default function AddProductPage() {
       <footer className="mt-24 border-t border-border bg-background">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
           <div className="space-y-4">
-            <span className="font-medium text-lg text-primary">Essentials</span>
+            <BrandLogo variant="wordmark" className="h-6" />
             <p className="text-sm text-muted-foreground">
-              A curated apparel marketplace — hand-picked clothes and essentials
-              for people who buy once and buy right.
+              A curated marketplace — hand-picked goods, sold once and sold right.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -465,7 +465,7 @@ export default function AddProductPage() {
           </div>
           <div className="flex flex-col items-start justify-between md:items-end">
             <p className="text-left text-sm text-muted-foreground md:text-right">
-              &copy; 2024 Essentials. All rights reserved.
+              &copy; 2024 PrimeAxis. All rights reserved.
             </p>
             <div className="mt-4 flex gap-4">
               <Globe

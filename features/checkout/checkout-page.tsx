@@ -532,7 +532,7 @@ export default function CheckoutPage() {
               </span>
             </div>
             <div className="flex items-center justify-between text-muted-foreground">
-              <span>Essentials service fee</span>
+              <span>Service fee</span>
               <span className="font-medium text-foreground">
                 {formatPrice(0)}
               </span>

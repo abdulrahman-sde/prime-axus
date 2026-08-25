@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import BrandLogo from "@/components/shared/brand-logo";
 import { Add, Box, Home2, ShoppingBag } from "reicon-react";
 import {
   Sidebar,
@@ -32,10 +33,10 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="flex flex-row items-center gap-2 px-4 py-5">
-        <h1 className="text-xl font-semibold text-primary whitespace-nowrap transition-opacity group-data-[collapsible=icon]:opacity-0">
-          Essentials
-        </h1>
+      <SidebarHeader className="flex flex-row items-center px-4 py-5">
+        <Link href="/" aria-label="PrimeAxis home">
+          <BrandLogo variant="mark" className="h-8" />
+        </Link>
       </SidebarHeader>
 
       <SidebarContent>
@@ -95,7 +96,7 @@ export function AppSidebar() {
               {isPending ? "Loading..." : user?.name ?? "Signed in"}
             </p>
             <p className="truncate text-xs text-muted-foreground">
-              {isPending ? "Fetching account" : user?.email ?? "Essentials"}
+              {isPending ? "Fetching account" : user?.email ?? "PrimeAxis"}
             </p>
           </div>
         </div>

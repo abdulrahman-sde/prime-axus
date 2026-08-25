@@ -1,14 +1,16 @@
 import Link from "next/link";
-
-const WhatsAppHref = "https://wa.me/923227473415";
+import {
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_WHATSAPP_HREF,
+} from "@/constants/contact";
 
 export default function WhatsAppButton() {
   return (
     <Link
-      href={WhatsAppHref}
+      href={CONTACT_WHATSAPP_HREF}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with us on WhatsApp at +92 322 7473415"
+      aria-label={`Chat with us on WhatsApp at ${CONTACT_PHONE_DISPLAY}`}
       className="group fixed right-4 bottom-4 z-50 flex items-center rounded-full bg-whatsapp p-3.5 text-whatsapp-foreground shadow-lg transition-transform duration-200 hover:-translate-y-0.5 sm:right-6 sm:bottom-6"
     >
       <svg

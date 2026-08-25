@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Essentials | Curated Marketplace",
+  title: "PrimeAxis | Curated Marketplace",
   description:
     "A clean marketplace landing page with a strong hero and product discovery rows.",
 };

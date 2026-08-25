@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { expandCategory } from "@/lib/category-tree";
 import ProductGridPage from "@/features/products/product-grid-page";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export default async function ProductsRoute({
   searchParams,
@@ -13,10 +14,8 @@ export default async function ProductsRoute({
   const products = await prisma.product.findMany({
     where: {
       status: "ACTIVE",
-      ...(category ? { category } : {}),
-      ...(search
-        ? { name: { contains: search, mode: "insensitive" } }
-        : {}),
+      ...(category ? { category: { in: expandCategory(category) } } : {}),
+      ...(search ? { name: { contains: search, mode: "insensitive" } } : {}),
     },
     orderBy: { createdAt: "desc" },
   });
