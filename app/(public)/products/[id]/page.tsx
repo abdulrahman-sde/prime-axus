@@ -1,8 +1,51 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import ProductDetail from "@/features/products/components/product-detail";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
+
+async function getProduct(id: string) {
+  return prisma.product.findFirst({
+    where: { id, status: "ACTIVE" },
+  });
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
+  if (!product) return { title: "Product Not Found", robots: { index: false } };
+
+  const description = product.description
+    ? product.description.length > 160
+      ? `${product.description.slice(0, 157)}...`
+      : product.description
+    : `Shop ${product.name} at Prime Axus — fair prices, fast delivery.`;
+
+  return {
+    title: product.name,
+    description,
+    alternates: {
+      canonical: `/products/${product.id}`,
+    },
+    openGraph: {
+      title: product.name,
+      description,
+      type: "website",
+      images: product.image ? [{ url: product.image, alt: product.name }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.name,
+      description,
+      images: product.image ? [product.image] : [],
+    },
+  };
+}
 
 export default async function ProductDetailRoute({
   params,
@@ -11,9 +54,7 @@ export default async function ProductDetailRoute({
 }) {
   const { id } = await params;
 
-  const product = await prisma.product.findFirst({
-    where: { id, status: "ACTIVE" },
-  });
+  const product = await getProduct(id);
   if (!product) notFound();
 
   return (

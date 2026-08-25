@@ -402,7 +402,7 @@ export default function InventoryPage({
         </div>
         <div className="border-t border-border px-4 py-4 text-center sm:px-6 lg:px-8">
           <p className="text-sm text-muted-foreground">
-            &copy; 2024 PrimeAxis. All rights reserved.
+            &copy; 2024 Prime Axus. All rights reserved.
           </p>
         </div>
       </footer>

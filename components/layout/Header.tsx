@@ -56,7 +56,7 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
           <Link
             className="shrink-0 flex items-center -mt-2 gap-1"
             href="/"
-            aria-label="PrimeAxis home"
+            aria-label="Prime Axus home"
           >
             <BrandLogo variant="mark" className="h-8 w-8" />
             <BrandLogo variant="wordmark" className="h-12 mt-1" />

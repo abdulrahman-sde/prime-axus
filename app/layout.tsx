@@ -16,10 +16,74 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
+const siteUrl = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.primeaxus.com",
+);
+
+const SITE_TITLE = "Prime Axus";
+const SITE_DESCRIPTION =
+  "Prime Axus is a curated online marketplace for kitchen, office, and pet essentials — quality products, fair prices, and fast delivery.";
+
 export const metadata: Metadata = {
-  title: "PrimeAxis | Curated Marketplace",
-  description:
-    "A clean marketplace landing page with a strong hero and product discovery rows.",
+  metadataBase: siteUrl,
+  title: {
+    default: `${SITE_TITLE} — Curated Home, Office & Pet Essentials`,
+    template: `%s | ${SITE_TITLE}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_TITLE,
+  keywords: [
+    "Prime Axus",
+    "online marketplace",
+    "kitchen essentials",
+    "office supplies",
+    "pet supplies",
+    "curated products",
+    "online shopping",
+  ],
+  authors: [{ name: SITE_TITLE, url: siteUrl }],
+  creator: SITE_TITLE,
+  publisher: SITE_TITLE,
+  formatDetection: {
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: SITE_TITLE,
+    title: `${SITE_TITLE} — Curated Home, Office & Pet Essentials`,
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/landing/logo-text.png",
+        width: 2172,
+        height: 724,
+        alt: "Prime Axus",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_TITLE} — Curated Home, Office & Pet Essentials`,
+    description: SITE_DESCRIPTION,
+    images: ["/landing/logo-text.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  category: "shopping",
 };
 
 export default function RootLayout({

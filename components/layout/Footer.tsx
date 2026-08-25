@@ -19,7 +19,7 @@ export default function Footer() {
     <footer className="mt-24 border-t border-border bg-background">
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="flex flex-col gap-4">
-          <Link href="/" aria-label="PrimeAxis home" className="w-fit">
+          <Link href="/" aria-label="Prime Axus home" className="w-fit">
             <BrandLogo variant="wordmark" className="h-12 -mt-4" />
           </Link>
           <p className="text-sm text-muted-foreground">
@@ -68,7 +68,7 @@ export default function Footer() {
       </div>
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-between gap-4 border-t border-border px-6 py-6 text-sm md:flex-row">
         <span className="text-muted-foreground">
-          &copy; {new Date().getFullYear()} PrimeAxis. All rights reserved.
+          &copy; {new Date().getFullYear()} Prime Axus. All rights reserved.
         </span>
         <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
           <Link className="hover:underline" href="#">

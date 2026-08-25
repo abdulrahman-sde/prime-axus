@@ -465,7 +465,7 @@ export default function AddProductPage() {
           </div>
           <div className="flex flex-col items-start justify-between md:items-end">
             <p className="text-left text-sm text-muted-foreground md:text-right">
-              &copy; 2024 PrimeAxis. All rights reserved.
+              &copy; 2024 Prime Axus. All rights reserved.
             </p>
             <div className="mt-4 flex gap-4">
               <Globe

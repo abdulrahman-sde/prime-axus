@@ -26,7 +26,7 @@ export default function BrandLogo({
   return (
     <Image
       src={logo.src}
-      alt="PrimeAxis"
+      alt="Prime Axus"
       width={logo.width}
       height={logo.height}
       className={cn("h-7 w-auto", className)}

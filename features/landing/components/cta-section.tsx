@@ -20,7 +20,7 @@ export default function CtaSection() {
         <div className="relative px-6 py-20 sm:px-12 sm:py-24 lg:px-16 lg:pt-22 lg:pb-18">
           <div className="max-w-xl space-y-6">
             <p className="text-xs font-medium uppercase tracking-[0.28em] text-background/80">
-              The PrimeAxis edit
+              The Prime Axus edit
             </p>
             <h2 className="text-4xl font-medium leading-[1.08] tracking-tight text-background sm:text-5xl">
               Everything your home runs on.

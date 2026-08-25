@@ -34,7 +34,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-row items-center px-4 py-5">
-        <Link href="/" aria-label="PrimeAxis home">
+        <Link href="/" aria-label="Prime Axus home">
           <BrandLogo variant="mark" className="h-8" />
         </Link>
       </SidebarHeader>
@@ -96,7 +96,7 @@ export function AppSidebar() {
               {isPending ? "Loading..." : user?.name ?? "Signed in"}
             </p>
             <p className="truncate text-xs text-muted-foreground">
-              {isPending ? "Fetching account" : user?.email ?? "PrimeAxis"}
+              {isPending ? "Fetching account" : user?.email ?? "Prime Axus"}
             </p>
           </div>
         </div>

@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { expandCategory } from "@/lib/category-tree";
 import ProductGridPage from "@/features/products/product-grid-page";
 
 // export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Shop All Products",
+  description:
+    "Browse the full Prime Axus catalog — kitchen, office, and pet essentials with fair prices and fast delivery.",
+  alternates: {
+    canonical: "/products",
+  },
+};
 
 export default async function ProductsRoute({
   searchParams,
