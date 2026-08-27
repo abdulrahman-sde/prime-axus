@@ -66,7 +66,7 @@ export default function ShopByCategory({
               <p className="text-sm text-white/75">
                 {lead.count > 0
                   ? `${lead.count} ${lead.count === 1 ? "product" : "products"}`
-                  : "Coming soon"}
+                  : ""}
               </p>
             </div>
             <ArrowRight
