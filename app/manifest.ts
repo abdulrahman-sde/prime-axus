@@ -24,6 +24,5 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: "en",
     orientation: "portrait",
     categories: ["shopping", "business"],
-    url: siteUrl,
   };
 }
