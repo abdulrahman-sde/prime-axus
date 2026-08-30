@@ -6,12 +6,61 @@ import type { StoreProduct } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { AwardCertificate, Truck, Verified } from "reicon-react";
 import AddToCartButton from "@/features/cart/add-to-cart-button";
+import StructuredData from "@/components/seo/structured-data";
 
 export default function ProductDetail({ product }: { product: StoreProduct }) {
   const inStock = product.stock === null || product.stock > 0;
   const [selectedSize, setSelectedSize] = useState<string | null>(
     product.sizes[0] ?? null,
   );
+
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    image: product.image ? [product.image] : [],
+    description: product.description ?? undefined,
+    category: product.category ?? undefined,
+    brand: {
+      "@type": "Brand",
+      name: "Prime Axus",
+    },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "PKR",
+      price: String(product.price),
+      availability: inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.primeaxus.com"}/products/${product.id}`,
+    },
+    sku: product.id,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.primeaxus.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Products",
+        item: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.primeaxus.com"}/products`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.name,
+        item: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.primeaxus.com"}/products/${product.id}`,
+      },
+    ],
+  };
 
   const specs = [
     { label: "Category", value: product.category ?? "\u2014" },
@@ -51,7 +100,10 @@ export default function ProductDetail({ product }: { product: StoreProduct }) {
   );
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+    <>
+      <StructuredData data={productJsonLd} />
+      <StructuredData data={breadcrumbJsonLd} />
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="mb-lg">
         <p className="text-xs font-medium uppercase tracking-[0.24em] text-muted-foreground">
           {product.category ?? "Collection"}
@@ -174,5 +226,6 @@ export default function ProductDetail({ product }: { product: StoreProduct }) {
         </div>
       </div>
     </main>
+    </>
   );
 }
