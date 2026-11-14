@@ -36,22 +36,17 @@ export default function OpenGraphImage() {
               marginBottom: 24,
             }}
           >
-            <div
-              style={{
-                width: 64,
-                height: 64,
-                borderRadius: 18,
-                background: "#f5f5f4",
-                color: "#0b0b0d",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 28,
-                fontWeight: 700,
-              }}
-            >
-              P
-            </div>
+            <svg width="64" height="64" viewBox="0 0 64 64">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#4F8EF7" />
+                  <stop offset="1" stopColor="#1E40AF" />
+                </linearGradient>
+              </defs>
+              <rect width="64" height="64" rx="16" fill="url(#g)" />
+              <path d="M23 47V17H34.5A9.5 9.5 0 0 1 34.5 36H23" fill="none" stroke="#fff" strokeWidth="6.5" strokeLinejoin="round" strokeLinecap="round" />
+              <circle cx="43.5" cy="46" r="3.6" fill="#A9CBFF" />
+            </svg>
             <div style={{ fontSize: 28, letterSpacing: 2 }}>PRIME AXUS</div>
           </div>
           <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.05 }}>

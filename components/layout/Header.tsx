@@ -54,12 +54,11 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
       <div className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <Link
-            className="shrink-0 flex items-center -mt-2 gap-1"
+            className="shrink-0 flex items-center"
             href="/"
             aria-label="Prime Axus home"
           >
-            <BrandLogo variant="mark" className="h-8 w-8" />
-            <BrandLogo variant="wordmark" className="h-12 mt-1" />
+            <BrandLogo variant="wordmark" className="h-9" />
           </Link>
 
           <form
