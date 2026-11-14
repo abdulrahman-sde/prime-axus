@@ -12,8 +12,8 @@ const FEATURES = [
   },
   {
     icon: ShieldCheck,
-    title: "Pay on delivery",
-    description: "Pay when your order arrives",
+    title: "Secure payments",
+    description: "Card details are never stored by us",
   },
   {
     icon: RotateLeft,

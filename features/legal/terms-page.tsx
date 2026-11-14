@@ -29,7 +29,8 @@ export default function TermsPage() {
         <h2>Prices and payment</h2>
         <p>
           Prices are in US dollars and are shown at checkout together with
-          shipping. Orders are currently paid in cash on delivery. We aim for
+          shipping. Payment is taken online at checkout through our payment
+          provider. We aim for
           accurate product information and prices, but errors can occur.
         </p>
       </section>

@@ -4,6 +4,10 @@ export const BUSINESS_NAME = "Prime Axus";
 export const BUSINESS_LOCATION = "Austin, Texas, USA";
 export const POLICY_LAST_UPDATED = "November 14, 2026";
 
+// Orders are paid online only. Keep false until a payment provider (PayPal)
+// is connected; the server refuses to create orders while this is false.
+export const CHECKOUT_ENABLED = false;
+
 export const SHIPPING_FLAT_RATE = 0; // free standard shipping on every order
 export const SHIPPING_PROCESSING = "1–2 business days";
 export const SHIPPING_TRANSIT = "5–7 business days";

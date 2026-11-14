@@ -25,9 +25,8 @@ export default function PrivacyPage() {
           </li>
         </ul>
         <p>
-          We do not store payment card numbers. Orders are currently paid in
-          cash on delivery. If we add online payments, they will be handled by
-          a third-party payment provider such as PayPal, which processes your
+          We do not store payment card numbers. Payments are handled by a
+          third-party payment provider such as PayPal, which processes your
           payment details under its own privacy policy.
         </p>
       </section>

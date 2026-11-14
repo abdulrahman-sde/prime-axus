@@ -52,10 +52,11 @@ export default function ShippingPage() {
         </p>
       </section>
       <section>
-        <h2>Payment on delivery</h2>
+        <h2>Payment</h2>
         <p>
-          Orders are paid in cash when the package is delivered. Please have
-          the order amount ready when it arrives.
+          Orders are paid online at checkout through our payment provider. You
+          are charged when you place the order, and we never store your card
+          details.
         </p>
       </section>
       <section>

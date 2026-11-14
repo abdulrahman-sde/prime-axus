@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import type { StoreProduct } from "@/types";
 import { z } from "zod";
-import { SHIPPING_FLAT_RATE } from "@/constants/policies";
+import { CHECKOUT_ENABLED, SHIPPING_FLAT_RATE } from "@/constants/policies";
 
 const createOrderSchema = z.object({
   customerName: z.string().trim().min(2).max(120),
@@ -51,6 +51,9 @@ export async function createOrder(input: {
   paymentMethod: string;
   items: { productId: string; size: string | null; qty: number }[];
 }): Promise<{ orderId: string }> {
+  if (!CHECKOUT_ENABLED) {
+    throw new Error("Online checkout is opening soon. Please contact us to order.");
+  }
   const parsed = createOrderSchema.safeParse(input);
   if (!parsed.success) throw new Error("Invalid order details");
   const { customerName, customerEmail, address, paymentMethod, items } = parsed.data;

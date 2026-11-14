@@ -50,8 +50,7 @@ export default function ReturnPage() {
         <p>
           After we receive and inspect your return, we will email you the
           result. Approved refunds are issued within {REFUND_TIME}, to the
-          original payment method where possible. If you paid on delivery, we
-          will arrange the refund with you directly.
+          original payment method.
         </p>
       </section>
       <section>

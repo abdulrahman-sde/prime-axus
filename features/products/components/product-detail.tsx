@@ -170,9 +170,6 @@ export default function ProductDetail({ product }: { product: StoreProduct }) {
               soldOut={!inStock}
               disabled={product.sizes.length > 0 && !selectedSize}
             />
-            <p className="text-center text-xs text-muted-foreground">
-              Cash on Delivery — you won&apos;t be charged yet
-            </p>
           </div>
 
           <div className="space-y-3 rounded-xl border border-border bg-card p-5">

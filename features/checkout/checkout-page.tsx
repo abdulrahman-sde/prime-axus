@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import Skeleton from "@/components/shared/skeleton";
 import { toast } from "sonner";
 import {
+  CHECKOUT_ENABLED,
   SHIPPING_FLAT_RATE,
   SHIPPING_REGION,
   SHIPPING_TRANSIT,
@@ -20,8 +21,6 @@ import {
   CheckCircle,
   ChevronLeft,
   Lock,
-  Money,
-  ShieldCheck,
   Truck,
 } from "reicon-react";
 
@@ -124,7 +123,7 @@ export default function CheckoutPage() {
           customerName: `${firstName} ${lastName}`,
           customerEmail: email,
           address: `${address}, ${city}, ${zip}, ${country}`,
-          paymentMethod: "Cash on Delivery",
+          paymentMethod: "Online",
           items: items.map((item) => ({
             productId: item.productId,
             size: item.size,
@@ -154,7 +153,7 @@ export default function CheckoutPage() {
         </h1>
         <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground sm:text-base">
           Thanks for your order (ref {placedOrderId.slice(-8).toUpperCase()}).
-          A confirmation email is on its way — your order will be dispatched
+          Keep this reference for any questions. Your order will be dispatched
           within 1–2 business days.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -427,29 +426,21 @@ export default function CheckoutPage() {
 
           <section className="rounded-xl border border-border bg-card p-5 sm:p-6">
             <SectionTitle step={4} title="Payment" />
-            <div className="space-y-3">
-              <div className="flex items-center justify-between gap-4 rounded-xl border border-primary bg-primary/5 p-4 text-left ring-1 ring-primary">
-                <div className="flex items-center gap-3">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-                    <Money size={18} />
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">
-                      Cash on Delivery
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Pay when your order arrives
-                    </p>
-                  </div>
-                </div>
-                <span className="text-sm font-semibold text-primary">
-                  Selected
-                </span>
-              </div>
-              <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Lock size={13} />
-                Online payment is not available — you&apos;ll pay in cash at
-                your door.
+            <div className="rounded-xl border border-border bg-muted/40 p-4 text-sm leading-6 text-muted-foreground">
+              <p className="flex items-center gap-2 font-medium text-foreground">
+                <Lock size={15} />
+                Online checkout is opening soon
+              </p>
+              <p className="mt-1">
+                We&apos;re finishing secure online payments. To order in the
+                meantime, please{" "}
+                <Link
+                  href="/contact"
+                  className="font-medium text-foreground underline underline-offset-2"
+                >
+                  contact us
+                </Link>
+                .
               </p>
             </div>
           </section>
@@ -457,11 +448,13 @@ export default function CheckoutPage() {
           <TextureButton
             type="submit"
             className="w-full lg:hidden"
-            disabled={pending}
+            disabled={pending || !CHECKOUT_ENABLED}
           >
-            {pending
-              ? "Placing order..."
-              : `Place order — ${formatPrice(total)}`}
+            {!CHECKOUT_ENABLED
+              ? "Checkout opening soon"
+              : pending
+                ? "Placing order..."
+                : `Place order — ${formatPrice(total)}`}
           </TextureButton>
         </form>
 
@@ -542,17 +535,16 @@ export default function CheckoutPage() {
             type="submit"
             form="checkout-form"
             className="mt-5 hidden w-full lg:inline-flex"
-            disabled={pending}
+            disabled={pending || !CHECKOUT_ENABLED}
           >
-            {pending
-              ? "Placing order..."
-              : `Place order — ${formatPrice(total)}`}
+            {!CHECKOUT_ENABLED
+              ? "Checkout opening soon"
+              : pending
+                ? "Placing order..."
+                : `Place order — ${formatPrice(total)}`}
           </TextureButton>
 
-          <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-            <ShieldCheck size={13} className="text-tertiary" />
-            Protected by 256-bit encryption
-          </p>
+
         </aside>
       </div>
     </main>
