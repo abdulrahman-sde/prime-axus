@@ -58,7 +58,7 @@ export default function Header({ categories }: { categories: TopCategory[] }) {
             href="/"
             aria-label="Prime Axus home"
           >
-            <BrandLogo variant="wordmark" className="h-9" />
+            <BrandLogo variant="wordmark" className="h-11" />
           </Link>
 
           <form
