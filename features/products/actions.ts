@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/require-admin";
 import { createProductSchema, type CreateProductInput } from "@/lib/validations/product";
 
 export type CreateProductState = {
@@ -12,6 +13,7 @@ export async function createProduct(
   _prevState: CreateProductState,
   input: CreateProductInput,
 ): Promise<CreateProductState> {
+  await requireAdmin();
   const parsed = createProductSchema.safeParse(input);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
@@ -39,6 +41,7 @@ export async function createProduct(
 }
 
 export async function updateProductStatus(id: string, status: string) {
+  await requireAdmin();
   if (!["ACTIVE", "DRAFT", "ARCHIVED"].includes(status)) return;
   await prisma.product.update({
     where: { id },
@@ -47,11 +50,13 @@ export async function updateProductStatus(id: string, status: string) {
 }
 
 export async function updateProductStock(id: string, stock: number | null) {
+  await requireAdmin();
   if (stock !== null && (Number.isNaN(stock) || stock < 0)) return;
   await prisma.product.update({ where: { id }, data: { stock } });
 }
 
 export async function updateProductPrice(id: string, price: number) {
+  await requireAdmin();
   if (Number.isNaN(price) || price < 0) return;
   await prisma.product.update({ where: { id }, data: { price: price.toFixed(2) } });
 }

@@ -10,7 +10,7 @@
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "prisma db seed",
+    "db:seed": "ALLOW_ADMIN_SEED=true prisma db seed",
     "db:studio": "prisma studio"
   },
   "dependencies": {

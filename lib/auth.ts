@@ -7,6 +7,9 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   emailAndPassword: {
     enabled: true,
+    // Public sign-up is closed. Only the admin seed script may create users
+    // (run it with ALLOW_ADMIN_SEED=true).
+    disableSignUp: process.env.ALLOW_ADMIN_SEED !== "true",
   },
   user: {
     additionalFields: {

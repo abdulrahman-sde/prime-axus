@@ -73,7 +73,7 @@ export default function Footer() {
             </span>
           </div>
           <p className="text-sm leading-5 text-muted-foreground">
-            Open 24/7
+            Support replies within 1 business day
           </p>
         </div>
       </div>
@@ -82,13 +82,13 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} Prime Axus. All rights reserved.
         </span>
         <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
-          <Link className="hover:underline" href="#">
+          <Link className="hover:underline" href="/privacy">
             Privacy
           </Link>
-          <Link className="hover:underline" href="#">
+          <Link className="hover:underline" href="/terms">
             Terms
           </Link>
-          <Link className="hover:underline" href="#">
+          <Link className="hover:underline" href="/sitemap.xml">
             Sitemap
           </Link>
         </div>

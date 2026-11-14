@@ -1,25 +1,29 @@
+import {
+  RETURN_WINDOW_DAYS,
+  SHIPPING_FLAT_RATE,
+} from "@/constants/policies";
 import { Headset, RotateLeft, ShieldCheck, Truck } from "reicon-react";
 
 const FEATURES = [
   {
     icon: Truck,
-    title: "Flat shipping",
-    description: "$2 shipping on every order",
+    title: "Free shipping",
+    description: SHIPPING_FLAT_RATE === 0 ? "Free standard shipping on every order" : `$${SHIPPING_FLAT_RATE} flat shipping on every order`,
   },
   {
     icon: ShieldCheck,
-    title: "Secure payment",
-    description: "100% secure transactions",
+    title: "Pay on delivery",
+    description: "Pay when your order arrives",
   },
   {
     icon: RotateLeft,
     title: "Easy returns",
-    description: "30-day return policy",
+    description: `${RETURN_WINDOW_DAYS}-day return policy`,
   },
   {
     icon: Headset,
-    title: "24/7 support",
-    description: "Dedicated customer service",
+    title: "Real support",
+    description: "Replies within 1 business day",
   },
 ];
 

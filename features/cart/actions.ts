@@ -2,6 +2,25 @@
 
 import { prisma } from "@/lib/prisma";
 import type { StoreProduct } from "@/types";
+import { z } from "zod";
+import { SHIPPING_FLAT_RATE } from "@/constants/policies";
+
+const createOrderSchema = z.object({
+  customerName: z.string().trim().min(2).max(120),
+  customerEmail: z.string().trim().email().max(200),
+  address: z.string().trim().min(8).max(400),
+  paymentMethod: z.string().trim().max(60),
+  items: z
+    .array(
+      z.object({
+        productId: z.string().min(1).max(64),
+        size: z.string().max(60).nullable(),
+        qty: z.number().int().min(1).max(50),
+      }),
+    )
+    .min(1)
+    .max(100),
+});
 
 export async function getCartProducts(
   ids: string[],
@@ -29,11 +48,14 @@ export async function createOrder(input: {
   customerName: string;
   customerEmail: string;
   address: string;
-  shipping: number;
   paymentMethod: string;
   items: { productId: string; size: string | null; qty: number }[];
 }): Promise<{ orderId: string }> {
-  const { customerName, customerEmail, address, shipping, paymentMethod, items } = input;
+  const parsed = createOrderSchema.safeParse(input);
+  if (!parsed.success) throw new Error("Invalid order details");
+  const { customerName, customerEmail, address, paymentMethod, items } = parsed.data;
+  // Shipping is decided on the server, never taken from the browser.
+  const shipping = SHIPPING_FLAT_RATE;
 
   const products = await prisma.product.findMany({
     where: { id: { in: items.map((item) => item.productId) } },

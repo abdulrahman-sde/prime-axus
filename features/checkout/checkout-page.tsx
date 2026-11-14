@@ -10,6 +10,11 @@ import { TextureButton } from "@/components/ui/texture-button";
 import { Input } from "@/components/ui/input";
 import Skeleton from "@/components/shared/skeleton";
 import { toast } from "sonner";
+import {
+  SHIPPING_FLAT_RATE,
+  SHIPPING_REGION,
+  SHIPPING_TRANSIT,
+} from "@/constants/policies";
 import { cn, formatPrice } from "@/lib/utils";
 import {
   CheckCircle,
@@ -18,23 +23,15 @@ import {
   Money,
   ShieldCheck,
   Truck,
-  TruckFast,
 } from "reicon-react";
 
 const shippingMethods = [
   {
     id: "standard",
     label: "Standard delivery",
-    detail: "5–7 business days",
-    price: 0,
+    detail: `${SHIPPING_TRANSIT} · ${SHIPPING_REGION}`,
+    price: SHIPPING_FLAT_RATE,
     icon: Truck,
-  },
-  {
-    id: "express",
-    label: "Express delivery",
-    detail: "1–2 business days",
-    price: 5000,
-    icon: TruckFast,
   },
 ] as const;
 
@@ -127,7 +124,6 @@ export default function CheckoutPage() {
           customerName: `${firstName} ${lastName}`,
           customerEmail: email,
           address: `${address}, ${city}, ${zip}, ${country}`,
-          shipping,
           paymentMethod: "Cash on Delivery",
           items: items.map((item) => ({
             productId: item.productId,
@@ -370,10 +366,6 @@ export default function CheckoutPage() {
                     className={cn(inputClass, "w-full")}
                   >
                     <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="DE">Germany</option>
-                    <option value="AE">UAE</option>
                   </select>
                 </div>
               </div>

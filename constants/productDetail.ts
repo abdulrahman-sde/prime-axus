@@ -35,8 +35,8 @@ export const productDetail: ProductDetail = {
     },
     {
       icon: 'local_shipping',
-      title: 'Free Express Shipping',
-      description: 'Ships within 24 hours in a protective case, with free 30-day returns.',
+      title: 'Free Shipping',
+      description: 'Ships within 1–2 business days in protective packaging, with 30-day returns.',
     },
   ],
   description:
