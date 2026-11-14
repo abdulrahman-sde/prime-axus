@@ -1,65 +1,41 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-// Prime Axus logo: a layered "A" (also an axis) built from three translucent
-// rounded strokes. Inline SVG so it scales cleanly and follows light/dark
-// mode through the theme colors. Edit here to update the logo everywhere.
-function Glyph() {
-  return (
-    <g
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      className="text-primary"
-    >
-      <path d="M12 35H36" strokeOpacity=".4" strokeWidth="8" />
-      <path d="M8 40L24 8" strokeOpacity=".6" strokeWidth="9" />
-      <path d="M24 8L40 40" strokeWidth="9" />
-    </g>
-  );
-}
+// Real logo files live in /public/brand (SVG with outlined text, so no font
+// dependency). A light and a dark version are swapped with the theme.
+const LOGOS = {
+  wordmark: { light: "/brand/logo.svg", dark: "/brand/logo-dark.svg", width: 221, height: 48 },
+  mark: { light: "/brand/mark.svg", dark: "/brand/mark-dark.svg", width: 48, height: 48 },
+} as const;
 
 export default function BrandLogo({
   variant = "wordmark",
   className,
 }: {
-  variant?: "mark" | "wordmark";
+  variant?: keyof typeof LOGOS;
   className?: string;
 }) {
-  if (variant === "mark") {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 48 48"
-        role="img"
-        aria-label="Prime Axus"
-        className={cn("h-8 w-auto", className)}
-      >
-        <Glyph />
-      </svg>
-    );
-  }
+  const logo = LOGOS[variant];
+  const base = cn("h-8 w-auto", className);
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 196 48"
-      role="img"
-      aria-label="Prime Axus"
-      className={cn("h-8 w-auto text-foreground", className)}
-    >
-      <Glyph />
-      <text
-        x="56"
-        y="34"
-        fill="currentColor"
-        fontSize="29"
-        fontWeight="650"
-        textLength="138"
-        lengthAdjust="spacingAndGlyphs"
-        style={{ fontFamily: "var(--font-sans), system-ui, sans-serif" }}
-      >
-        Prime Axus
-      </text>
-    </svg>
+    <>
+      <Image
+        src={logo.light}
+        alt="Prime Axus"
+        width={logo.width}
+        height={logo.height}
+        priority
+        className={cn(base, "dark:hidden")}
+      />
+      <Image
+        src={logo.dark}
+        alt=""
+        aria-hidden
+        width={logo.width}
+        height={logo.height}
+        className={cn(base, "hidden dark:block")}
+      />
+    </>
   );
 }
