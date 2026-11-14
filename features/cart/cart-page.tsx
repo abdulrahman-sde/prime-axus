@@ -70,7 +70,7 @@ export default function CartPage() {
   const itemCount = items.reduce((sum, item) => sum + item.qty, 0);
 
   const applyPromo = () => {
-    if (promoInput.trim().toUpperCase() === "LUXE10") {
+    if (promoInput.trim().toUpperCase() === "PRIME10") {
       setPromoApplied(true);
       setPromoError(false);
     } else {
@@ -258,7 +258,7 @@ export default function CartPage() {
                 </div>
                 {promoApplied && (
                   <div className="flex items-center justify-between text-tertiary">
-                    <span>Promo (LUXE10)</span>
+                    <span>Promo (PRIME10)</span>
                     <span className="font-medium">
                       -{formatPrice(discount)}
                     </span>
@@ -287,7 +287,7 @@ export default function CartPage() {
                     setPromoInput(e.target.value);
                     setPromoError(false);
                   }}
-                  placeholder="Promo code (try LUXE10)"
+                  placeholder="Promo code (try PRIME10)"
                   className="min-w-0 flex-1 bg-transparent px-2 py-1.5 text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
                 />
                 <button
@@ -300,7 +300,7 @@ export default function CartPage() {
               </div>
               {promoError && (
                 <p className="mt-2 text-xs text-error">
-                  That code isn&apos;t valid. Try LUXE10.
+                  That code isn&apos;t valid. Try PRIME10.
                 </p>
               )}
 
