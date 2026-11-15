@@ -1,5 +1,10 @@
 import Link from "next/link";
 import { Call, Envelope, Location } from "reicon-react";
+import {
+  BUSINESS_ADDRESS,
+  BUSINESS_LEGAL_NAME,
+  BUSINESS_LOCATION,
+} from "@/constants/policies";
 import BrandLogo from "@/components/shared/brand-logo";
 import FooterSupportLinks from "@/components/layout/footer-support";
 import SocialLinks from "@/components/layout/social-links";
@@ -69,7 +74,7 @@ export default function Footer() {
             </a>
             <span className="flex items-center gap-2 text-sm text-muted-foreground">
               <Location size={15} className="shrink-0" />
-              Austin, Texas, USA
+              {BUSINESS_ADDRESS || BUSINESS_LOCATION}
             </span>
           </div>
           <p className="text-sm leading-5 text-muted-foreground">
@@ -79,7 +84,8 @@ export default function Footer() {
       </div>
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-between gap-4 border-t border-border px-6 py-6 text-sm md:flex-row">
         <span className="text-muted-foreground">
-          &copy; {new Date().getFullYear()} Prime Axus. All rights reserved.
+          &copy; {new Date().getFullYear()} {BUSINESS_LEGAL_NAME || "Prime Axus"}.
+          All rights reserved.
         </span>
         <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground">
           <Link className="hover:underline" href="/privacy">

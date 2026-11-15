@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { createOrder, getCartProducts } from "@/features/cart/actions";
+import { getCartProducts } from "@/features/cart/actions";
+import {
+  capturePaypalCheckout,
+  createPaypalCheckout,
+} from "@/features/cart/payments";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useCart } from "@/hooks/use-cart";
 import type { StoreProduct } from "@/types";
 import { TextureButton } from "@/components/ui/texture-button";
@@ -61,7 +66,7 @@ export default function CheckoutPage() {
   const [shippingMethod, setShippingMethod] =
     useState<(typeof shippingMethods)[number]["id"]>("standard");
   const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
+  const [pending] = useState(false);
 
   const itemsKey = items.map((item) => item.productId).join(",");
   const loading = fetchedFor !== itemsKey;
@@ -103,44 +108,22 @@ export default function CheckoutPage() {
     shippingMethods.find((method) => method.id === shippingMethod)?.price ?? 0;
   const total = subtotal + shipping;
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (cartRows.length === 0) return;
-
-    const form = new FormData(e.currentTarget);
-    const email = String(form.get("email") ?? "").trim();
-    const firstName = String(form.get("firstName") ?? "").trim();
-    const lastName = String(form.get("lastName") ?? "").trim();
-    const address = String(form.get("address") ?? "").trim();
-    const city = String(form.get("city") ?? "").trim();
-    const zip = String(form.get("zip") ?? "").trim();
-    const country = String(form.get("country") ?? "").trim();
-
-    const toastId = toast.loading("Placing your order...");
-    startTransition(async () => {
-      try {
-        const { orderId } = await createOrder({
-          customerName: `${firstName} ${lastName}`,
-          customerEmail: email,
-          address: `${address}, ${city}, ${zip}, ${country}`,
-          paymentMethod: "Online",
-          items: items.map((item) => ({
-            productId: item.productId,
-            size: item.size,
-            qty: item.qty,
-          })),
-        });
-        clear();
-        setPlacedOrderId(orderId);
-        toast.success("Order placed", { id: toastId });
-      } catch (error) {
-        toast.error(
-          error instanceof Error ? error.message : "Failed to place order",
-          { id: toastId },
-        );
-      }
-    });
+  function readCustomer() {
+    const form = document.getElementById("checkout-form") as HTMLFormElement;
+    const f = new FormData(form);
+    const v = (k: string) => String(f.get(k) ?? "").trim();
+    return {
+      customerName: `${v("firstName")} ${v("lastName")}`,
+      customerEmail: v("email"),
+      address: `${v("address")}, ${v("city")}, ${v("zip")}, ${v("country")}`,
+    };
   }
+
+  const cartItems = items.map((item) => ({
+    productId: item.productId,
+    size: item.size,
+    qty: item.qty,
+  }));
 
   if (placedOrderId) {
     return (
@@ -246,7 +229,11 @@ export default function CheckoutPage() {
       </div>
 
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1fr_380px] lg:gap-10">
-        <form id="checkout-form" className="space-y-6" onSubmit={onSubmit}>
+        <form
+          id="checkout-form"
+          className="space-y-6"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <section className="rounded-xl border border-border bg-card p-5 sm:p-6">
             <SectionTitle step={1} title="Contact" />
             <div className="space-y-4">
@@ -426,36 +413,79 @@ export default function CheckoutPage() {
 
           <section className="rounded-xl border border-border bg-card p-5 sm:p-6">
             <SectionTitle step={4} title="Payment" />
-            <div className="rounded-xl border border-border bg-muted/40 p-4 text-sm leading-6 text-muted-foreground">
-              <p className="flex items-center gap-2 font-medium text-foreground">
-                <Lock size={15} />
-                Online checkout is opening soon
-              </p>
-              <p className="mt-1">
-                We&apos;re finishing secure online payments. To order in the
-                meantime, please{" "}
-                <Link
-                  href="/contact"
-                  className="font-medium text-foreground underline underline-offset-2"
-                >
-                  contact us
-                </Link>
-                .
-              </p>
-            </div>
+            {CHECKOUT_ENABLED ? (
+              <PayPalScriptProvider
+                options={{
+                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? "",
+                  currency: "USD",
+                  intent: "capture",
+                }}
+              >
+                <p className="mb-3 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Lock size={13} />
+                  Pay with PayPal, a debit or credit card. Your card details
+                  go straight to PayPal; we never see or store them.
+                </p>
+                <PayPalButtons
+                  style={{ layout: "vertical", shape: "rect" }}
+                  disabled={pending || cartRows.length === 0}
+                  onClick={(_data, actions) => {
+                    const form = document.getElementById(
+                      "checkout-form",
+                    ) as HTMLFormElement;
+                    if (!form.checkValidity()) {
+                      form.reportValidity();
+                      return actions.reject();
+                    }
+                    return actions.resolve();
+                  }}
+                  createOrder={() => createPaypalCheckout(cartItems)}
+                  onApprove={async (data) => {
+                    const toastId = toast.loading("Confirming your payment...");
+                    try {
+                      const { orderId } = await capturePaypalCheckout({
+                        paypalOrderId: data.orderID,
+                        customer: readCustomer(),
+                        items: cartItems,
+                      });
+                      clear();
+                      setPlacedOrderId(orderId);
+                      toast.success("Order placed", { id: toastId });
+                    } catch (error) {
+                      toast.error(
+                        error instanceof Error
+                          ? error.message
+                          : "We could not confirm your payment",
+                        { id: toastId },
+                      );
+                    }
+                  }}
+                  onError={() =>
+                    toast.error("Payment could not be started. Please try again.")
+                  }
+                />
+              </PayPalScriptProvider>
+            ) : (
+              <div className="rounded-xl border border-border bg-muted/40 p-4 text-sm leading-6 text-muted-foreground">
+                <p className="flex items-center gap-2 font-medium text-foreground">
+                  <Lock size={15} />
+                  Online checkout is opening soon
+                </p>
+                <p className="mt-1">
+                  We&apos;re finishing secure online payments. To order in the
+                  meantime, please{" "}
+                  <Link
+                    href="/contact"
+                    className="font-medium text-foreground underline underline-offset-2"
+                  >
+                    contact us
+                  </Link>
+                  .
+                </p>
+              </div>
+            )}
           </section>
 
-          <TextureButton
-            type="submit"
-            className="w-full lg:hidden"
-            disabled={pending || !CHECKOUT_ENABLED}
-          >
-            {!CHECKOUT_ENABLED
-              ? "Checkout opening soon"
-              : pending
-                ? "Placing order..."
-                : `Place order — ${formatPrice(total)}`}
-          </TextureButton>
         </form>
 
         <aside className="rounded-xl border border-border bg-card p-6 lg:sticky lg:top-24">
@@ -531,18 +561,9 @@ export default function CheckoutPage() {
             </span>
           </div>
 
-          <TextureButton
-            type="submit"
-            form="checkout-form"
-            className="mt-5 hidden w-full lg:inline-flex"
-            disabled={pending || !CHECKOUT_ENABLED}
-          >
-            {!CHECKOUT_ENABLED
-              ? "Checkout opening soon"
-              : pending
-                ? "Placing order..."
-                : `Place order — ${formatPrice(total)}`}
-          </TextureButton>
+          <p className="mt-5 text-center text-xs text-muted-foreground">
+            Complete your payment in the Payment step.
+          </p>
 
 
         </aside>

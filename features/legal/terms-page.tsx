@@ -1,6 +1,11 @@
 import Link from "next/link";
 import LegalPage from "./legal-page";
-import { BUSINESS_LOCATION, BUSINESS_NAME } from "@/constants/policies";
+import {
+  BUSINESS_ADDRESS,
+  BUSINESS_LEGAL_NAME,
+  BUSINESS_LOCATION,
+  BUSINESS_NAME,
+} from "@/constants/policies";
 import { CONTACT_EMAIL } from "@/constants/contact";
 
 export default function TermsPage() {
@@ -12,7 +17,8 @@ export default function TermsPage() {
       <section>
         <h2>Who we are</h2>
         <p>
-          {BUSINESS_NAME} is an online store based in {BUSINESS_LOCATION}. You
+          {BUSINESS_LEGAL_NAME || BUSINESS_NAME} is an online store based in{" "}
+          {BUSINESS_ADDRESS || BUSINESS_LOCATION}. You
           can reach us at <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </p>
       </section>

@@ -2,11 +2,15 @@
 // footer and checkout message stays consistent.
 export const BUSINESS_NAME = "Prime Axus";
 export const BUSINESS_LOCATION = "Austin, Texas, USA";
+// Fill these in once you have them; they appear in the footer, About and Terms.
+// Payment processors expect the legal entity and address to match your records.
+export const BUSINESS_LEGAL_NAME = ""; // e.g. "Prime Axus LLC"
+export const BUSINESS_ADDRESS = ""; // street address, shown when set
 export const POLICY_LAST_UPDATED = "November 14, 2026";
 
-// Orders are paid online only. Keep false until a payment provider (PayPal)
-// is connected; the server refuses to create orders while this is false.
-export const CHECKOUT_ENABLED = false;
+// Orders are paid online only. Checkout turns on automatically once the
+// PayPal client id is configured (NEXT_PUBLIC_PAYPAL_CLIENT_ID).
+export const CHECKOUT_ENABLED = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID);
 
 export const SHIPPING_FLAT_RATE = 0; // free standard shipping on every order
 export const SHIPPING_PROCESSING = "1–2 business days";

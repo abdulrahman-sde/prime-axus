@@ -15,7 +15,6 @@ import {
   Minus,
   Plus,
   ShoppingCart,
-  Tag,
   Trash,
 } from "reicon-react";
 
@@ -25,9 +24,6 @@ export default function CartPage() {
   const { items, updateQty, removeItem } = useCart();
   const [products, setProducts] = useState<StoreProduct[]>([]);
   const [fetchedFor, setFetchedFor] = useState<string | null>(null);
-  const [promoInput, setPromoInput] = useState("");
-  const [promoApplied, setPromoApplied] = useState(false);
-  const [promoError, setPromoError] = useState(false);
 
   const itemsKey = items.map((item) => item.productId).join(",");
   const loading = fetchedFor !== itemsKey;
@@ -65,19 +61,8 @@ export default function CartPage() {
     (sum, item) => sum + item.price * item.qty,
     0,
   );
-  const discount = promoApplied ? subtotal * 0.1 : 0;
-  const total = subtotal - discount + SHIPPING;
+  const total = subtotal + SHIPPING;
   const itemCount = items.reduce((sum, item) => sum + item.qty, 0);
-
-  const applyPromo = () => {
-    if (promoInput.trim().toUpperCase() === "PRIME10") {
-      setPromoApplied(true);
-      setPromoError(false);
-    } else {
-      setPromoApplied(false);
-      setPromoError(true);
-    }
-  };
 
   return (
     <div className="bg-background text-foreground">
@@ -256,14 +241,6 @@ export default function CartPage() {
                     {formatPrice(subtotal)}
                   </span>
                 </div>
-                {promoApplied && (
-                  <div className="flex items-center justify-between text-tertiary">
-                    <span>Promo (PRIME10)</span>
-                    <span className="font-medium">
-                      -{formatPrice(discount)}
-                    </span>
-                  </div>
-                )}
                 <div className="flex items-center justify-between text-muted-foreground">
                   <span>Shipping</span>
                   <span className="font-medium text-foreground">
@@ -278,31 +255,6 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center gap-2 rounded-lg border border-dashed border-border bg-background p-1.5">
-                <Tag size={16} className="ml-2 shrink-0 text-muted-foreground" />
-                <input
-                  type="text"
-                  value={promoInput}
-                  onChange={(e) => {
-                    setPromoInput(e.target.value);
-                    setPromoError(false);
-                  }}
-                  placeholder="Promo code (try PRIME10)"
-                  className="min-w-0 flex-1 bg-transparent px-2 py-1.5 text-sm text-foreground outline-none placeholder:text-muted-foreground/70"
-                />
-                <button
-                  type="button"
-                  onClick={applyPromo}
-                  className="shrink-0 bg-foreground px-4 py-1.5 text-xs font-semibold text-background transition-opacity hover:opacity-85 active:scale-[0.97]"
-                >
-                  Apply
-                </button>
-              </div>
-              {promoError && (
-                <p className="mt-2 text-xs text-error">
-                  That code isn&apos;t valid. Try PRIME10.
-                </p>
-              )}
 
               <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
                 <span className="text-base font-medium text-foreground">

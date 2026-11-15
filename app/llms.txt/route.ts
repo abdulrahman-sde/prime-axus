@@ -10,6 +10,7 @@ export async function GET() {
     "## Pages",
     `- ${siteUrl}/`,
     `- ${siteUrl}/products`,
+    `- ${siteUrl}/about`,
     `- ${siteUrl}/contact`,
     `- ${siteUrl}/shipping-policy`,
     `- ${siteUrl}/return-policy`,

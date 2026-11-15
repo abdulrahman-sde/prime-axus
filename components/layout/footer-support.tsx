@@ -4,6 +4,7 @@ const linkClass =
   "text-left text-sm text-muted-foreground transition-all hover:text-foreground hover:underline";
 
 const links = [
+  { label: "About Us", href: "/about" },
   { label: "Help Center", href: "/contact" },
   { label: "Shipping & Delivery", href: "/shipping-policy" },
   { label: "Returns & Refunds", href: "/return-policy" },
