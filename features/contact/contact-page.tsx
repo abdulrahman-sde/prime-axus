@@ -27,7 +27,7 @@ const CHANNELS = [
     label: "Hours",
     value: CONTACT_HOURS,
     href: null,
-    hint: "Closed on Sundays.",
+    hint: "Email replies within 1 business day.",
   },
 ];
 
