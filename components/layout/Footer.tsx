@@ -7,7 +7,6 @@ import {
 } from "@/constants/policies";
 import BrandLogo from "@/components/shared/brand-logo";
 import FooterSupportLinks from "@/components/layout/footer-support";
-import SocialLinks from "@/components/layout/social-links";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE_DISPLAY,
@@ -26,18 +25,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="flex flex-col gap-4">
           <Link href="/" aria-label="Prime Axus home" className="w-fit">
-            <BrandLogo variant="wordmark" className="h-10" />
+            <BrandLogo variant="wordmark" className="h-7" />
           </Link>
           <p className="text-sm text-muted-foreground">
             Curated goods that make everyday life easier — hand-picked for
             people who buy once and buy right.
           </p>
-          <div className="flex flex-col gap-2.5">
-            <span className="font-semibold text-sm text-foreground">
-              Follow us
-            </span>
-            <SocialLinks className="flex items-center gap-2.5" />
-          </div>
         </div>
         <div className="flex flex-col gap-2">
           <span className="font-semibold text-sm text-foreground">Shop</span>

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 // Real logo files live in /public/brand (SVG with outlined text, so no font
 // dependency). A light and a dark version are swapped with the theme.
 const LOGOS = {
-  wordmark: { light: "/brand/logo.svg", dark: "/brand/logo-dark.svg", width: 217, height: 48 },
+  wordmark: { light: "/brand/logo.svg", dark: "/brand/logo-dark.svg", width: 844, height: 130 },
   mark: { light: "/brand/mark.svg", dark: "/brand/mark-dark.svg", width: 48, height: 48 },
 } as const;
 

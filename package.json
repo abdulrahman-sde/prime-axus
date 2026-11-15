@@ -12,7 +12,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "ALLOW_ADMIN_SEED=true prisma db seed",
     "db:studio": "prisma studio",
-    "db:clean-catalog": "tsx prisma/clean-catalog.ts"
+    "db:clean-catalog": "tsx --env-file=.env prisma/clean-catalog.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

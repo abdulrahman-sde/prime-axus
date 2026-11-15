@@ -10,7 +10,7 @@ export default function LoginPage() {
       <div className="m-auto w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
           <Link href="/" className="flex justify-center" aria-label="Prime Axus home">
-            <BrandLogo variant="wordmark" className="h-9" />
+            <BrandLogo variant="wordmark" className="h-7" />
           </Link>
           <h1 className="mt-6 text-2xl font-semibold tracking-tight text-foreground">
             Welcome back
