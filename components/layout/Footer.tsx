@@ -25,7 +25,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="flex flex-col gap-4">
           <Link href="/" aria-label="Prime Axus home" className="w-fit">
-            <BrandLogo variant="wordmark" className="h-7" />
+            <BrandLogo variant="wordmark" className="h-6" />
           </Link>
           <p className="text-sm text-muted-foreground">
             Curated goods that make everyday life easier — hand-picked for
