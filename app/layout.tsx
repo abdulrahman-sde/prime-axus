@@ -57,20 +57,11 @@ export const metadata: Metadata = {
     siteName: SITE_TITLE,
     title: `${SITE_TITLE} — Curated Home, Office & Pet Essentials`,
     description: SITE_DESCRIPTION,
-    images: [
-      {
-        url: "/landing/logo-text.png",
-        width: 2172,
-        height: 724,
-        alt: "Prime Axus",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_TITLE} — Curated Home, Office & Pet Essentials`,
     description: SITE_DESCRIPTION,
-    images: ["/landing/logo-text.png"],
   },
   robots: {
     index: true,
