@@ -55,8 +55,8 @@ export default function AboutPage() {
       <section>
         <h2>Who is behind the store</h2>
         <p>
-          {BUSINESS_LEGAL_NAME || BUSINESS_NAME} ·{" "}
-          {BUSINESS_ADDRESS || BUSINESS_LOCATION}
+          {BUSINESS_NAME} is operated by {BUSINESS_LEGAL_NAME || BUSINESS_NAME},
+          a Texas limited liability company. {BUSINESS_ADDRESS || BUSINESS_LOCATION}
         </p>
       </section>
       <section>

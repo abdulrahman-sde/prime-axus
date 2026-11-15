@@ -4,8 +4,8 @@ export const BUSINESS_NAME = "Prime Axus";
 export const BUSINESS_LOCATION = "Austin, Texas, USA";
 // Fill these in once you have them; they appear in the footer, About and Terms.
 // Payment processors expect the legal entity and address to match your records.
-export const BUSINESS_LEGAL_NAME = ""; // e.g. "Prime Axus LLC"
-export const BUSINESS_ADDRESS = ""; // street address, shown when set
+export const BUSINESS_LEGAL_NAME = "Prime Axis Trading LLC";
+export const BUSINESS_ADDRESS = "5900 Balcones Drive, STE 100, Austin, TX 78731, USA";
 export const POLICY_LAST_UPDATED = "November 14, 2026";
 
 // Orders are paid online only. Checkout turns on automatically once the

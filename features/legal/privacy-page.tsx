@@ -1,12 +1,16 @@
 import LegalPage from "./legal-page";
-import { BUSINESS_LOCATION, BUSINESS_NAME } from "@/constants/policies";
+import {
+  BUSINESS_ADDRESS,
+  BUSINESS_LEGAL_NAME,
+  BUSINESS_NAME,
+} from "@/constants/policies";
 import { CONTACT_EMAIL } from "@/constants/contact";
 
 export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      intro={`${BUSINESS_NAME} ("we", "us") respects your privacy. This policy explains what personal information we collect when you use primeaxus.com, how we use it and the choices you have.`}
+      intro={`${BUSINESS_NAME} ("we", "us"), operated by ${BUSINESS_LEGAL_NAME}, respects your privacy. This policy explains what personal information we collect when you use primeaxus.com, how we use it and the choices you have.`}
     >
       <section>
         <h2>Information we collect</h2>
@@ -86,7 +90,7 @@ export default function PrivacyPage() {
         <h2>Changes and contact</h2>
         <p>
           We may update this policy and will change the date above when we do.
-          Questions? Contact {BUSINESS_NAME}, {BUSINESS_LOCATION}, at{" "}
+          Questions? Contact {BUSINESS_LEGAL_NAME}, {BUSINESS_ADDRESS}, at{" "}
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </p>
       </section>

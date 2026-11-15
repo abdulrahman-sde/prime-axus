@@ -17,7 +17,8 @@ export default function TermsPage() {
       <section>
         <h2>Who we are</h2>
         <p>
-          {BUSINESS_LEGAL_NAME || BUSINESS_NAME} is an online store based in{" "}
+          {BUSINESS_NAME} is an online store operated by {BUSINESS_LEGAL_NAME},
+          a Texas limited liability company located at{" "}
           {BUSINESS_ADDRESS || BUSINESS_LOCATION}. You
           can reach us at <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
         </p>
